@@ -19,7 +19,7 @@ disqusShortname = ""
   # CSS class.
 
   # Provide your metadata here.
-  name = "Ishita Gupta"
+  name = "Portfolio : Ishita Gupta"
   description = "I'm trying to explore the world of data. Here's my journey."
 
   # Link custom assets relative to /static
@@ -50,6 +50,14 @@ disqusShortname = ""
     [[params.navigation.links]]
       name = "Blogs"
       url = "blogs"
+
+    [[params.navigation.links]]
+      name = "About me"
+      url = "about me"
+
+    [[params.navigation.links]]
+        name = "Projects"
+        url = "projects"
 
     #[[params.navigation.links]]
     #  name = "Generic Blog"
