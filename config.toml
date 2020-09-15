@@ -63,9 +63,9 @@ disqusShortname = ""
     #  name = "Generic Blog"
     #  url = "blogs/ipsum"
 
-    [[params.navigation.links]]
-      name = "Element"
-      url = "elements.html"
+    #[[params.navigation.links]]
+      #name = "Element"
+    #  url = "elements.html"
 
     # Add custom links here by uncommenting code below. To remove links just delete
     # the [[params.navigation.links]] map associated with that link. Copy and paste
@@ -100,7 +100,7 @@ disqusShortname = ""
       subtitle = """Hi, I am Ishita Gupta and I am from India.
       During my undergraduation in IT engineering, I explored the field of data analysis and was fascinated by the intersection of business and data.
       That is how I ended up in the MAM programme at London Business School.
-      I am quite passionate about Strategy and Product. In my free time, you can see me engrossed in a book in a comfortable corner, cooking some Indian food or rewatching a tennis match (Hala Rafa)!  """
+      I am quite passionate about Strategy and Product. In my free time, you can see me engrossed in a book in a comfortable corner, cooking some Indian food, travelling to new places or rewatching a tennis match (Hala Rafa)!  """
       buttonText = "Get Started"
       url = "blogs"
 
