@@ -1,0 +1,149 @@
+---
+title: "India Covid data"
+date: '2017-10-31T22:42:51-05:00'
+description: What happened to the covid crisis in India?
+draft: no
+image: covid.jpg
+keywords: ''
+slug: covid
+categories:
+- ''
+- ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(infer)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+statewise<-vroom("C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv")
+covid_data<-read_csv("C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv")
+
+
+```
+
+```{r, echo=TRUE}
+skim(covid_data)
+skim(statewise)
+```
+
+How has testing increased in India?
+
+```{r, echo=TRUE}
+testing <- covid_data %>%
+  drop_na(TotalSamples,Positive) %>%
+  filter(Date<'2020-08-05') %>%
+  group_by(Date) %>%
+  summarise(sum_testing=sum(TotalSamples),sum_positive=sum(Positive))
+
+testing
+
+plot1<- ggplot(testing,aes(x=Date,y=sum_positive))+
+  geom_area()
+
+plot1
+```
+
+```{r, echo=TRUE}
+testing <- covid_data %>%
+  drop_na(TotalSamples,Positive) %>%
+  mutate(testing_in_millions=TotalSamples/1000000) %>%
+  filter(Date<'2020-08-05') %>%
+  group_by(Date) %>%
+  summarise(sum_testing=sum(testing_in_millions),sum_positive=sum(Positive))
+
+testing
+
+plot2<- ggplot(testing,aes(x=Date,y=sum_testing))+
+  geom_area(fill='yellow')
+
+plot2
+```
+
+```{r, echo=TRUE}
+
+state_data <- statewise %>%
+  drop_na(Confirmed,Deaths,Cured) %>%
+ # filter(Date<'01/08/20') %>%
+  group_by(Date) %>%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))
+  
+state_data
+
+```
+
+```{r, echo=TRUE}
+
+state_data <- statewise %>%
+ # drop_na(Confirmed,Deaths,Cured) %>%
+ # filter(Date<'01/08/20') %>%
+  group_by(Date) %>%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))
+  
+state_data
+
+```
+
+```{r, echo=TRUE}
+
+worst_hit_confirmed <- statewise %>%
+  #drop_na(Confirmed,Deaths,Cured) %>%
+  #filter(Date<'01/08/20') %>%
+  rename(state='State/UnionTerritory') %>%
+  group_by(state) %>%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
+  arrange(desc(sum_confirmed))
+  
+worst_hit_confirmed
+
+```
+
+```{r, echo=TRUE}
+
+worst_hit_deaths <- statewise %>%
+  #drop_na(Confirmed,Deaths,Cured) %>%
+  #filter(Date<'01/08/20') %>%
+  rename(state='State/UnionTerritory') %>%
+  group_by(state) %>%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
+  arrange(desc(sum_deaths))
+  
+worst_hit_deaths
+
+```
+
+
+```{r, echo=TRUE}
+
+best_recovery_rate <- statewise %>%
+  #drop_na(Confirmed,Deaths,Cured) %>%
+  #filter(Date<'01/08/20') %>%
+  rename(state='State/UnionTerritory') %>%
+  group_by(state) %>%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
+  arrange(desc(sum_cured))
+  
+best_recovery_rate
+
+```

@@ -1,0 +1,663 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="I&#39;m trying to explore the world of data. Here&#39;s my journey!">
+	<meta name="author" content="Portfolio : Ishita Gupta">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>India Covid data &middot; Portfolio website for Ishita Gupta</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Ishita Gupta</strong> <span></span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+                <li><a href="/about%20me">About me</a></li>
+            
+                <li><a href="/projects">Projects</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>India Covid data</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/covid.jpg" alt="" /></span>
+                            
+                            
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<pre class="r"><code>statewise&lt;-vroom(&quot;C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv&quot;)</code></pre>
+<pre><code>## Rows: 6,316
+## Columns: 9
+## Delimiter: &quot;,&quot;
+## chr [5]: Date, Time, State/UnionTerritory, ConfirmedIndianNational, ConfirmedForeignNati...
+## dbl [4]: Sno, Cured, Deaths, Confirmed
+## 
+## Use `spec()` to retrieve the guessed column specification
+## Pass a specification to the `col_types` argument to quiet this message</code></pre>
+<pre class="r"><code>covid_data&lt;-read_csv(&quot;C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Date = col_date(format = &quot;&quot;),
+##   State = col_character(),
+##   TotalSamples = col_double(),
+##   Negative = col_double(),
+##   Positive = col_double()
+## )</code></pre>
+<pre class="r"><code>skim(covid_data)</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-1">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">covid_data</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">5223</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">5</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">3</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">State</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">40</td>
+<td align="right">0</td>
+<td align="right">35</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2020-04-01</td>
+<td align="left">2020-09-14</td>
+<td align="left">2020-07-01</td>
+<td align="right">167</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">TotalSamples</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">494806.34</td>
+<td align="right">918688.0</td>
+<td align="right">58</td>
+<td align="right">20809.5</td>
+<td align="right">106064</td>
+<td align="right">518702.00</td>
+<td align="right">7636000</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Negative</td>
+<td align="right">2104</td>
+<td align="right">0.60</td>
+<td align="right">311210.40</td>
+<td align="right">591858.7</td>
+<td align="right">0</td>
+<td align="right">13475.0</td>
+<td align="right">63085</td>
+<td align="right">312325.00</td>
+<td align="right">4086276</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Positive</td>
+<td align="right">879</td>
+<td align="right">0.83</td>
+<td align="right">20629.75</td>
+<td align="right">58273.2</td>
+<td align="right">0</td>
+<td align="right">270.0</td>
+<td align="right">2035</td>
+<td align="right">13324.25</td>
+<td align="right">1077374</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>skim(statewise)</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-1">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">statewise</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">6316</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">9</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">230</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Time</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">State/UnionTerritory</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">40</td>
+<td align="right">0</td>
+<td align="right">42</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">ConfirmedIndianNational</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">62</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">ConfirmedForeignNational</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">12</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Sno</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3158.50</td>
+<td align="right">1823.42</td>
+<td align="right">1</td>
+<td align="right">1579.75</td>
+<td align="right">3158.5</td>
+<td align="right">4737.25</td>
+<td align="right">6316</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">Cured</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">21442.53</td>
+<td align="right">64914.18</td>
+<td align="right">0</td>
+<td align="right">25.00</td>
+<td align="right">851.0</td>
+<td align="right">9262.25</td>
+<td align="right">755850</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Deaths</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">611.75</td>
+<td align="right">2278.01</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">12.0</td>
+<td align="right">243.25</td>
+<td align="right">29894</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Confirmed</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">30219.64</td>
+<td align="right">87751.74</td>
+<td align="right">0</td>
+<td align="right">97.00</td>
+<td align="right">1888.5</td>
+<td align="right">15257.25</td>
+<td align="right">1077374</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<p>How has testing increased in India?</p>
+<pre class="r"><code>testing &lt;- covid_data %&gt;%
+  drop_na(TotalSamples,Positive) %&gt;%
+  filter(Date&lt;&#39;2020-08-05&#39;) %&gt;%
+  group_by(Date) %&gt;%
+  summarise(sum_testing=sum(TotalSamples),sum_positive=sum(Positive))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>testing</code></pre>
+<pre><code>## # A tibble: 126 x 3
+##    Date       sum_testing sum_positive
+##    &lt;date&gt;           &lt;dbl&gt;        &lt;dbl&gt;
+##  1 2020-04-01        8624          302
+##  2 2020-04-02       14906          510
+##  3 2020-04-03       20130          898
+##  4 2020-04-04        9744          306
+##  5 2020-04-05       40410         1461
+##  6 2020-04-06       28397         1196
+##  7 2020-04-07       75446         2974
+##  8 2020-04-08       63058         2473
+##  9 2020-04-09      107720         4681
+## 10 2020-04-10      153601         6490
+## # ... with 116 more rows</code></pre>
+<pre class="r"><code>plot1&lt;- ggplot(testing,aes(x=Date,y=sum_positive))+
+  geom_area()
+
+plot1</code></pre>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>testing &lt;- covid_data %&gt;%
+  drop_na(TotalSamples,Positive) %&gt;%
+  mutate(testing_in_millions=TotalSamples/1000000) %&gt;%
+  filter(Date&lt;&#39;2020-08-05&#39;) %&gt;%
+  group_by(Date) %&gt;%
+  summarise(sum_testing=sum(testing_in_millions),sum_positive=sum(Positive))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>testing</code></pre>
+<pre><code>## # A tibble: 126 x 3
+##    Date       sum_testing sum_positive
+##    &lt;date&gt;           &lt;dbl&gt;        &lt;dbl&gt;
+##  1 2020-04-01     0.00862          302
+##  2 2020-04-02     0.0149           510
+##  3 2020-04-03     0.0201           898
+##  4 2020-04-04     0.00974          306
+##  5 2020-04-05     0.0404          1461
+##  6 2020-04-06     0.0284          1196
+##  7 2020-04-07     0.0754          2974
+##  8 2020-04-08     0.0631          2473
+##  9 2020-04-09     0.108           4681
+## 10 2020-04-10     0.154           6490
+## # ... with 116 more rows</code></pre>
+<pre class="r"><code>plot2&lt;- ggplot(testing,aes(x=Date,y=sum_testing))+
+  geom_area(fill=&#39;yellow&#39;)
+
+plot2</code></pre>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>state_data &lt;- statewise %&gt;%
+  drop_na(Confirmed,Deaths,Cured) %&gt;%
+ # filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
+  group_by(Date) %&gt;%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>state_data</code></pre>
+<pre><code>## # A tibble: 230 x 4
+##    Date     sum_confirmed sum_deaths sum_cured
+##    &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 01/02/20             2          0         0
+##  2 01/03/20             3          0         0
+##  3 01/04/20          1834         41       144
+##  4 01/05/20         34972       1152      9065
+##  5 01/06/20        190535       5394     91819
+##  6 01/07/20        585493      17400    347979
+##  7 01/08/20       1695988      36511   1094374
+##  8 01/09/20       3691166      65288   2839882
+##  9 02/02/20             3          0         0
+## 10 02/03/20             5          0         0
+## # ... with 220 more rows</code></pre>
+<pre class="r"><code>state_data &lt;- statewise %&gt;%
+ # drop_na(Confirmed,Deaths,Cured) %&gt;%
+ # filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
+  group_by(Date) %&gt;%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>state_data</code></pre>
+<pre><code>## # A tibble: 230 x 4
+##    Date     sum_confirmed sum_deaths sum_cured
+##    &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 01/02/20             2          0         0
+##  2 01/03/20             3          0         0
+##  3 01/04/20          1834         41       144
+##  4 01/05/20         34972       1152      9065
+##  5 01/06/20        190535       5394     91819
+##  6 01/07/20        585493      17400    347979
+##  7 01/08/20       1695988      36511   1094374
+##  8 01/09/20       3691166      65288   2839882
+##  9 02/02/20             3          0         0
+## 10 02/03/20             5          0         0
+## # ... with 220 more rows</code></pre>
+<pre class="r"><code>worst_hit_confirmed &lt;- statewise %&gt;%
+  #drop_na(Confirmed,Deaths,Cured) %&gt;%
+  #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
+  rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
+  group_by(state) %&gt;%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
+  arrange(desc(sum_confirmed))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>worst_hit_confirmed</code></pre>
+<pre><code>## # A tibble: 42 x 4
+##    state          sum_confirmed sum_deaths sum_cured
+##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Maharashtra         45420878    1542433  29474209
+##  2 Tamil Nadu          24007706     384375  18851765
+##  3 Andhra Pradesh      18127026     169332  12869306
+##  4 Karnataka           14950877     255536   9608541
+##  5 Delhi               12958046     357158  10489651
+##  6 Uttar Pradesh       10775437     185139   7457390
+##  7 West Bengal          7905733     180920   5971975
+##  8 Gujarat              6474026     262341   4808691
+##  9 Bihar                6208053      31593   4845770
+## 10 Telengana            5312127      39345   3987460
+## # ... with 32 more rows</code></pre>
+<pre class="r"><code>worst_hit_deaths &lt;- statewise %&gt;%
+  #drop_na(Confirmed,Deaths,Cured) %&gt;%
+  #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
+  rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
+  group_by(state) %&gt;%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
+  arrange(desc(sum_deaths))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>worst_hit_deaths</code></pre>
+<pre><code>## # A tibble: 42 x 4
+##    state          sum_confirmed sum_deaths sum_cured
+##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Maharashtra         45420878    1542433  29474209
+##  2 Tamil Nadu          24007706     384375  18851765
+##  3 Delhi               12958046     357158  10489651
+##  4 Gujarat              6474026     262341   4808691
+##  5 Karnataka           14950877     255536   9608541
+##  6 Uttar Pradesh       10775437     185139   7457390
+##  7 West Bengal          7905733     180920   5971975
+##  8 Andhra Pradesh      18127026     169332  12869306
+##  9 Madhya Pradesh       3696668     102363   2676646
+## 10 Rajasthan            4690519      73720   3580847
+## # ... with 32 more rows</code></pre>
+<pre class="r"><code>best_recovery_rate &lt;- statewise %&gt;%
+  #drop_na(Confirmed,Deaths,Cured) %&gt;%
+  #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
+  rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
+  group_by(state) %&gt;%
+  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
+  arrange(desc(sum_cured))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>best_recovery_rate</code></pre>
+<pre><code>## # A tibble: 42 x 4
+##    state          sum_confirmed sum_deaths sum_cured
+##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Maharashtra         45420878    1542433  29474209
+##  2 Tamil Nadu          24007706     384375  18851765
+##  3 Andhra Pradesh      18127026     169332  12869306
+##  4 Delhi               12958046     357158  10489651
+##  5 Karnataka           14950877     255536   9608541
+##  6 Uttar Pradesh       10775437     185139   7457390
+##  7 West Bengal          7905733     180920   5971975
+##  8 Bihar                6208053      31593   4845770
+##  9 Gujarat              6474026     262341   4808691
+## 10 Telengana            5312127      39345   3987460
+## # ... with 32 more rows</code></pre>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.facebook.com/Ishita14091996/" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://github.com/ishita149/" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/ishitagupta14/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Ishita Gupta</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

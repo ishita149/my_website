@@ -128,10 +128,10 @@ disqusShortname = ""
       url = "blogs/gapminder"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
-      url = "blogs/ipsum"
+      title = "India Covid data"
+      subtitle = "How did India end up being 2nd worst hit by Covid?"
+      image = "covid.jpg"
+      url = "blogs/covid"
 
    #[[params.tiles.showcase]]
     #  title = "Consequat"
