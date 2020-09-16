@@ -110,10 +110,10 @@ disqusShortname = ""
     # Display your showcases here.
 
     [[params.tiles.showcase]]
-      title = "NYT masks"
-      subtitle = "New york mask usage"
+      title = "IBM HR analytics"
+      subtitle = "IBM employee trend and attrition data"
       image = "pic01.jpg"
-      url = "blogs/blog5"
+      url = "blogs/ibm"
 
     [[params.tiles.showcase]]
       title = "Movies"

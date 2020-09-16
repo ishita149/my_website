@@ -1,0 +1,463 @@
+---
+title: "IBM HR analytics"
+date: '2017-10-31T22:42:51-05:00'
+description: IBM employee data analytics
+draft: no
+image: pic03.jpg
+keywords: ''
+slug: ibm
+categories:
+- ''
+- ''
+---
+
+
+```{r setup, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+
+options("scipen"=100, "digits"=4) # Added to skip scientific notation
+```
+
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(ggplot2)
+library(ggrepel) # Added for Challenge 1
+library(scales) # Added for Challenge 2
+library(tidytext) # Added for Challenge 2
+library(knitr)
+library(readr)
+```
+
+
+# Analysis on IBM HR Analytics Employee Attrition & Performance data
+
+
+We will analyse a data set on Human Resource Analytics. 
+
+The [IBM HR Analytics Employee Attrition & Performance data set](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) is a fictional data set created by IBM data scientists.  
+
+Among other things, the data set includes employees' income, their distance from work, their position in the company, their level of education, etc. A full description can be found on the website.
+
+## Load data
+First let us load the data
+
+```{r}
+
+hr_dataset <- read_csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/datasets_1067_1925_WA_Fn-UseC_-HR-Employee-Attrition.csv")
+glimpse(hr_dataset)
+
+```
+## Data Cleaning and wrangling
+
+We are going to clean the data set, as variable names are in capital letters, some variables are not really necessary, and some variables, e.g., `education` are given as a number rather than a more useful description
+
+
+```{r}
+
+hr_cleaned <- hr_dataset %>% 
+  clean_names() %>% 
+  mutate(
+    education = case_when(
+      education == 1 ~ "Below College",
+      education == 2 ~ "College",
+      education == 3 ~ "Bachelor",
+      education == 4 ~ "Master",
+      education == 5 ~ "Doctor"
+    ),
+    environment_satisfaction = case_when(
+      environment_satisfaction == 1 ~ "Low",
+      environment_satisfaction == 2 ~ "Medium",
+      environment_satisfaction == 3 ~ "High",
+      environment_satisfaction == 4 ~ "Very High"
+    ),
+    job_satisfaction = case_when(
+      job_satisfaction == 1 ~ "Low",
+      job_satisfaction == 2 ~ "Medium",
+      job_satisfaction == 3 ~ "High",
+      job_satisfaction == 4 ~ "Very High"
+    ),
+    performance_rating = case_when(
+      performance_rating == 1 ~ "Low",
+      performance_rating == 2 ~ "Good",
+      performance_rating == 3 ~ "Excellent",
+      performance_rating == 4 ~ "Outstanding"
+    ),
+    work_life_balance = case_when(
+      work_life_balance == 1 ~ "Bad",
+      work_life_balance == 2 ~ "Good",
+      work_life_balance == 3 ~ "Better",
+      work_life_balance == 4 ~ "Best"
+    )
+  ) %>% 
+  select(age, attrition, daily_rate, department,
+         distance_from_home, education,
+         gender, job_role,environment_satisfaction,
+         job_satisfaction, marital_status,
+         monthly_income, num_companies_worked, percent_salary_hike,
+         performance_rating, total_working_years,
+         work_life_balance, years_at_company,
+         years_since_last_promotion)
+
+```
+
+## Analysis
+
+### Data Summary
+
+```{r one_page_summary, echo=TRUE}
+skim(hr_cleaned)
+```
+### How often do people leave the company?
+
+The mean tenure of those who left should give us this answer.
+
+```{r avg_tenure, echo=TRUE}
+# Calculate how often do people leave the company? Mean of tenure of those who leave
+
+hr_attrition <- hr_cleaned %>%  # Create a data set of those who left in case we need it afterwards
+  filter(attrition == "Yes") # Filter by yes
+  
+average_tenure <- hr_attrition %>%
+  summarise(average_tenure = mean(years_at_company)) # Calculate the average tenure of those who left
+
+# Show results
+average_tenure 
+
+```
+As it seems, people often leave the company after 5 years.
+
+### Age, Years at company, Monthly income and Years since last promotion
+
+We will analyse how these variables are distributed. First we need to subset our data.
+
+```{r summary_stats, echo=TRUE}
+# Select variables for analysis
+summary_stats <- hr_cleaned %>% 
+  select(age, years_at_company, monthly_income, years_since_last_promotion)
+
+# Data Summary
+skim(summary_stats)
+```
+Looking at the summary statistics we can infer that age is the closest one to the normal distribution. Let's analyse this in further detail. We will plot each distribution and analyse within **each** department: Sales, Research and HR.
+
+#### Age Distribution
+
+```{r age_dist, echo=TRUE}
+# Plot Age distribution
+age_dist <- ggplot(hr_cleaned, aes(x=age, fill = department)) +
+  geom_bar() +
+  labs(title = "Age distribution of IBM Employees",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill = "Department") +
+  xlab("Age")
+
+plot(age_dist)
+```
+We see that the majority of the IBM employees are between the age of 30-36 years with the peak being at 35 years. Within the departments, Research and development and Sales department follow the overall trend. However for the Human Resource department, we see an uneven trend.
+
+#### Tenure distribution
+
+```{r tenure_dist, echo=TRUE}
+# Plot tenure distribution
+tenure_dist <- ggplot(hr_cleaned, aes(x=years_at_company, fill = department)) +
+  geom_bar() +
+  labs(title = "Tenure distribution of IBM Employees",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill = "Department") +
+  xlab("Tenure")
+
+plot(tenure_dist)
+```
+
+Most of the IBM employees have a tenure of between 1-5 years with the peak being at 5 years. The trend is consistent within the various departments as well.
+
+#### Income distribution
+
+```{r income_dist, echo=TRUE}
+# Plot Monthly income distribution
+income_dist<- ggplot(hr_cleaned, aes(x=monthly_income, fill = department)) +
+  geom_histogram(color = 'white') +
+  labs(title = "Monthly Income Distribution of IBM Employees",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill = "Department") +
+  xlab("Monthly Income")
+
+plot(income_dist)
+```
+
+We see that the monthly income data is `left-skewed` with most of the employees falling in the range of 2000-7000. The trend is consistent with both the HR and Research and development departments however for the Sales department, we see the trend shifting towards the right and an irregular trend with the peak at 5000 as opposed to the general trend of 2500.
+
+Let's analyse this by education level
+
+```{r income_education, echo=TRUE}
+income_dist<-ggplot(hr_cleaned,aes(x=monthly_income,
+                                   fill=department)) +
+  geom_histogram(color='white') +
+  
+  labs(title='Distribution of monthly income at IBM',
+       x='Monthly income',
+       y='Count',
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill='department') +
+  facet_wrap(~education) +
+  theme_bw()
+
+plot(income_dist)
+```
+
+In most cases, the distribution seems to be `left-skewed` as well. It can also be appreciated that most of the salaries hoover around the lower-levels in employees who are educated up to bachelor's degree.
+
+#### Promotion Distribution
+
+```{r promotion_dist, echo=TRUE}
+# Plot Years since last promotion distribution
+promotion_dist<-ggplot(hr_cleaned, aes(x=years_since_last_promotion, fill = department)) +
+  geom_bar() +
+  labs(title = "Years since last promotion Distribution of IBM Employees",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill = "Department") +
+  xlab("Years since last promotion")
+
+plot(promotion_dist)
+```
+
+The data for this is left skewed with most of the employees having their last promotion within 0-2 years.
+
+### Work life balance and Job Satisfaction
+
+How are these distributed? Let's find out.
+
+First, we need to create a data set that will allow us to plot this data including percentages. We will include a column "n" to count the categories inside the satisfaction, and another one called "ratio" to represent that in "%"
+
+We will also change the order of the satisfaction and work life balance levels so as to get a better ordered plot.
+
+```{r sat_wlb, echo=TRUE}
+# Compare satisfaction and work life balance
+
+# Create object data frame 
+sat_wlb <- hr_cleaned %>% 
+  # Select the variables
+  select(environment_satisfaction, 
+         work_life_balance) %>% 
+ 
+   # Group by satisfaction 
+  group_by(environment_satisfaction) %>% 
+  # Generate a column that counts the work_life_balance in environment_satisfaction
+  count(work_life_balance) %>% 
+  
+  # Create a ratio of work_life_balance in environment_satisfaction
+  mutate(ratio = percent(n/sum(n))) %>%
+  
+  # Convert to factor to display in correct order in the bar plot
+  mutate(environment_satisfaction = factor(environment_satisfaction, 
+                                           c("Low", "Medium", "High","Very High")), 
+         work_life_balance = factor(work_life_balance, 
+                                    c("Bad", "Good", "Better","Best"))
+         ) 
+
+# Show results
+kable(sat_wlb)
+```
+
+```{r plot_sat_wlb, echo=TRUE}
+
+plot_sat_wlb<- ggplot(sat_wlb, aes(x=environment_satisfaction,
+                    y=n,
+                    fill = work_life_balance)) +
+                       
+  geom_col() +
+  geom_text(aes(label= ratio
+                      ),
+                  position = position_stack(vjust=0.45)
+                  ) +
+  
+  scale_x_discrete(limits=c("Low","Medium","High","Very High")) +
+  
+  labs(title = "Environment Satisfaction and Work Life Balance",
+       fill = "Work Life Balance",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset") +
+  xlab("Environment Satisfaction") +
+  ylab("Count")
+
+plot(plot_sat_wlb)
+```
+
+### Income, education level and gender
+
+
+As we previously saw, the distribution of the monthly income is `left-skewed`. Since the mean will be too sensitive with the `outliers`, we need to analyse the income using the `median`, and not the `mean`.
+
+We will now create 3 different data sets comparing the median with other categorical variables.
+
+```{r income_edu_gender_dataframes, echo=TRUE}
+
+# Calculate mean income by education
+income_edu <- hr_cleaned %>%
+  group_by(education) %>%
+  summarise(median_income = median(monthly_income))
+
+# Calculate mean income by gender
+income_gender <- hr_cleaned %>%
+  group_by(gender) %>%
+  summarise (median_income = median(monthly_income))
+
+
+# Mean income by education and gender
+
+edu_gen<- hr_cleaned %>%
+  group_by(education, gender) %>%
+  summarise(median_income = median(monthly_income))
+
+```
+
+Show results and plot data. We will include `theme_bw()` to make it look good.
+```{r income_grouped_education, echo=TRUE}
+
+# Show results on education
+kable(income_edu)
+
+# Plot education vs income
+ggplot(income_edu, aes(reorder(education,
+                       median_income),
+                       median_income,
+                       fill = education)) +
+  geom_col() +
+  labs(title = "Relationship between education and monthly income at IBM",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset") +
+  ylab("Median monthly income") +
+  xlab("Education Level") +
+  theme_bw() + # Add theme
+  theme(legend.position = "none")
+```
+
+As it can be appreciated, there is a relationship between education levels. From lowest to highest, the more educated the employee, the more they are expected to earn. However, the median of those who are only educated up to college degree seem to be higher than those who went on to do a bachelors degree.
+
+```{r income_gender, echo=TRUE}
+# Show results on gender
+kable(income_gender)
+
+```
+We will now add `theme_economist()` to this plot to make it look good.
+
+```{r income_gender_p, echo=TRUE}
+# Plot gender vs income
+income_gender_p<-ggplot(income_gender, aes(gender,
+                       median_income,
+                       fill = gender)) +
+  geom_col() +
+  labs(title = "Relationship between gender and median income at IBM",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset") +
+  xlab("Gender") +
+  ylab("Median Income") +
+  theme_economist() +
+  theme(legend.position = "none")
+  
+plot(income_gender_p)
+```
+
+According to the plot, women earn more than men at IBM.
+
+```{r income_educ_gender, echo=TRUE}
+# Show results by education and gender
+kable(edu_gen)
+ 
+# Plot income by education and gender
+  
+ggplot(edu_gen, aes(x=reorder(education,median_income),
+                    y=median_income,
+                    fill = gender)) +
+geom_col(position = position_dodge(preserve='single')) +
+  labs(title = "Relationship between education and median income at IBM per gender",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset",
+       fill = 'Gender') +
+  ylab("Median income") +
+  xlab("Education Level") +
+  theme_bw() 
+  
+```
+
+On most levels, women earn more than men at IBM. The biggest discrepancy comes in the "Doctor" level. Let's take a further look at this level.
+
+```{r doctor, echo=TRUE}
+
+df_2 <- edu_gen %>%
+  filter(education == "Doctor")
+
+kable(df_2)
+
+```
+Indeed, the females earn more than the men.
+
+### Income vs Job Role
+
+How is the income distributed vs the job role? We will use a boxplot to analyse this.
+```{r income_job_role, echo=TRUE}
+#plotting boxplot between rob role and monthly income
+income_job_role<- ggplot(hr_cleaned, aes(x=reorder(job_role, -monthly_income),
+                       y=monthly_income,
+                       fill = job_role)) + 
+  geom_boxplot() + #plotting boxplot between rob role and monthly income
+  theme(axis.text.x=element_text(angle=90,margin = margin(1, unit = "mm"),vjust =1))+ # readjusting a congested x axis
+  #adding titles
+  labs(title = "Monthly income by Job Role",
+       caption = "Source: IBM HR Analytics Employee Attrition & Performance dataset") +
+  xlab("Job Role") +
+  ylab("Monthly income") +
+  theme(legend.position = 'none')
+
+
+plot(income_job_role)
+```
+
+As it seems, managers and research directors are the highest paid at IBM.
+
+### Income, age and roles
+
+As a final analysis, we will proceed to plot the distribution of income by age in the different roles
+
+```{r income_age_fjob_level, echo=FALSE, fig.keep='all'}
+
+income_age_fjob_level<- ggplot(hr_cleaned, aes(x=age, y=monthly_income,
+                       fill = job_role)) + 
+  geom_col() +
+  
+  facet_wrap(~job_role)+ 
+  
+  labs(y = "Monthly income",
+         x = 'Age',
+         title = "Monthly Income According to Age on different jobs")+
+  theme(legend.position = "none")
+    NULL
+    
+plot(income_age_fjob_level)
+```
+
+We gather that "Managers" and "Research directors" roles are generally taken up by experienced candidates and thus they are right skewed and have higher monthly incomes. The Sales executive roles usually have a lower age and a higher income which is why we have a higher monthly income average for the Sales department. Human Resources and Sales Executives roles are generally the ones with the lowest incomes.
+
+### Conclusion
+
+We can conclude that the average tenure of employees at IBM is low and attrition is high because the monthly incomes are quite low and hence people tend to look for better opportunities. In addition to this, the data also shows that the employees are moderately satisfied with the working condition at IBM.
+
+We also note that average monthly income is higher for advanced degrees which may be taken up by Managers or Directors. IBM also tends to pay more to female employees especially if they have an advanced degree.
