@@ -21,6 +21,16 @@
     </item>
     
     <item>
+      <title>Gapminder data</title>
+      <link>/blogs/gapminder/</link>
+      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
+      
+      <guid>/blogs/gapminder/</guid>
+      <description>Gapminder revisitedRecall the gapminder data frame from the gapminder package. That data frame contains just six columns from the larger data in Gapminder World. In this part, you will join a few dataframes with more data than the ‘gapminder’ package. Specifically, you will look at data on
+Life expectancy at birth (life_expectancy_years.csv)GDP per capita in constant 2010 US$ (https://data.worldbank.org/indicator/NY.GDP.PCAP.KD)Female fertility: The number of babies per woman (https://data.</description>
+    </item>
+    
+    <item>
       <title>Movies</title>
       <link>/blogs/project1/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>

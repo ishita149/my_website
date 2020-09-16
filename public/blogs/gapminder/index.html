@@ -1,0 +1,536 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="I&#39;m trying to explore the world of data. Here&#39;s my journey!">
+	<meta name="author" content="Portfolio : Ishita Gupta">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>Gapminder data &middot; Portfolio website for Ishita Gupta</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Ishita Gupta</strong> <span></span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+                <li><a href="/about%20me">About me</a></li>
+            
+                <li><a href="/projects">Projects</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>Gapminder data</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                            
+                            
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="gapminder-revisited" class="section level1">
+<h1>Gapminder revisited</h1>
+<p>Recall the <code>gapminder</code> data frame from the gapminder package. That data frame contains just six columns from the larger <a href="https://www.gapminder.org/data/">data in Gapminder World</a>. In this part, you will join a few dataframes with more data than the ‘gapminder’ package. Specifically, you will look at data on</p>
+<ul>
+<li>Life expectancy at birth (life_expectancy_years.csv)</li>
+<li>GDP per capita in constant 2010 US$ (<a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.KD" class="uri">https://data.worldbank.org/indicator/NY.GDP.PCAP.KD</a>)</li>
+<li>Female fertility: The number of babies per woman (<a href="https://data.worldbank.org/indicator/SP.DYN.TFRT.IN" class="uri">https://data.worldbank.org/indicator/SP.DYN.TFRT.IN</a>)</li>
+<li>Primary school enrollment as % of children attending primary school (<a href="https://data.worldbank.org/indicator/SE.PRM.NENR" class="uri">https://data.worldbank.org/indicator/SE.PRM.NENR</a>)</li>
+<li>Mortality rate, for under 5, per 1000 live births (<a href="https://data.worldbank.org/indicator/SH.DYN.MORT" class="uri">https://data.worldbank.org/indicator/SH.DYN.MORT</a>)</li>
+<li>HIV prevalence (adults_with_hiv_percent_age_15_49.csv): The estimated number of people living with HIV per 100 population of age group 15-49.</li>
+</ul>
+<p>You must use the <code>wbstats</code> package to download data from the World Bank. The relevant World Bank indicators are <code>SP.DYN.TFRT.IN</code>, <code>SE.PRM.NENR</code>, <code>NY.GDP.PCAP.KD</code>, and <code>SH.DYN.MORT</code></p>
+<pre class="r"><code># load gapminder HIV data
+hiv &lt;- read_csv(&quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session4-workshop2/data/adults_with_hiv_percent_age_15_49.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   country = col_character(),
+##   `1988` = col_logical(),
+##   `1989` = col_logical()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>life_expectancy &lt;- read_csv(&quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session4-workshop2/data/life_expectancy_years.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   country = col_character()
+## )
+## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code># get World bank data using wbstats
+indicators &lt;- c(&quot;SP.DYN.TFRT.IN&quot;,&quot;SE.PRM.NENR&quot;, &quot;SH.DYN.MORT&quot;, &quot;NY.GDP.PCAP.KD&quot;)
+
+
+library(wbstats)
+
+worldbank_data &lt;- wb_data(country=&quot;countries_only&quot;, #countries only- no aggregates like Latin America, Europe, etc.
+                          indicator = indicators, 
+                          start_date = 1960, 
+                          end_date = 2016)
+
+# get a dataframe of information regarding countries, indicators, sources, regions, indicator topics, lending types, income levels,  from the World Bank API 
+countries &lt;-  wbstats::wb_cachelist$countries
+view(countries) 
+view(hiv)
+view(life_expectancy)
+view(worldbank_data)</code></pre>
+<p>You have to join the 3 dataframes (life_expectancy, worldbank_data, and HIV) into one. You may need to tidy your data first and then perform <a href="http://r4ds.had.co.nz/relational-data.html">join operations</a>. Think about what type makes the most sense <strong>and explain why you chose it</strong>.</p>
+<p>We clean up the data and then join them here.</p>
+<pre class="r"><code>tidy_hiv &lt;-hiv %&gt;%
+  pivot_longer(cols= 2:34, names_to = &quot;year&quot;, values_to = &quot;hiv_rate&quot;) #Creating a new column for year and hiv_rate using pivot
+
+#%&gt;%drop_na(hiv_rate)
+
+tidy_lifeexpectancy &lt;- life_expectancy %&gt;%
+  pivot_longer(cols= 2:302, names_to = &quot;year&quot;, values_to = &quot;life_expectancy_rate&quot;)  #Creating a new column for year and life_expectancy using pivot
+
+#%&gt;%drop_na(life_expectancy_rate)
+
+tidy_worldbank&lt;- worldbank_data %&gt;% 
+  rename(
+    year = date,
+    GDP_per_capita=NY.GDP.PCAP.KD,
+    primary_school_enrollment=SE.PRM.NENR,
+    mortality_rate=SH.DYN.MORT,
+    fertility_rate=SP.DYN.TFRT.IN
+    ) %&gt;% #renaming columns to simpler names
+  mutate(year=as.character(year) ) #converting numeric column to character
+
+
+join1&lt;- full_join(tidy_hiv, tidy_lifeexpectancy, by = c(&#39;country&#39;,&#39;year&#39;)) #joining hiv and life_expectancy
+join2&lt;- full_join(join1, tidy_worldbank, by = c(&#39;country&#39;,&#39;year&#39;)) #joining the above with worldbank data
+join2</code></pre>
+<pre><code>## # A tibble: 58,852 x 10
+##    country year  hiv_rate life_expectancy~ iso2c iso3c GDP_per_capita
+##    &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;
+##  1 Afghan~ 1979        NA             44.4 AF    AFG               NA
+##  2 Afghan~ 1980        NA             44.1 AF    AFG               NA
+##  3 Afghan~ 1981        NA             44.9 AF    AFG               NA
+##  4 Afghan~ 1982        NA             44.6 AF    AFG               NA
+##  5 Afghan~ 1983        NA             42.8 AF    AFG               NA
+##  6 Afghan~ 1984        NA             40.5 AF    AFG               NA
+##  7 Afghan~ 1985        NA             42.4 AF    AFG               NA
+##  8 Afghan~ 1986        NA             43.4 AF    AFG               NA
+##  9 Afghan~ 1987        NA             45.5 AF    AFG               NA
+## 10 Afghan~ 1988        NA             47.9 AF    AFG               NA
+## # ... with 58,842 more rows, and 3 more variables:
+## #   primary_school_enrollment &lt;dbl&gt;, mortality_rate &lt;dbl&gt;, fertility_rate &lt;dbl&gt;</code></pre>
+<pre class="r"><code>main_table&lt;- left_join(join2, countries, by = &#39;country&#39;) #joining above with countries table
+main_table #final table for hiv,life_expectancy,worldbank and countries</code></pre>
+<pre><code>## # A tibble: 58,852 x 27
+##    country year  hiv_rate life_expectancy~ iso2c.x iso3c.x GDP_per_capita
+##    &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;
+##  1 Afghan~ 1979        NA             44.4 AF      AFG                 NA
+##  2 Afghan~ 1980        NA             44.1 AF      AFG                 NA
+##  3 Afghan~ 1981        NA             44.9 AF      AFG                 NA
+##  4 Afghan~ 1982        NA             44.6 AF      AFG                 NA
+##  5 Afghan~ 1983        NA             42.8 AF      AFG                 NA
+##  6 Afghan~ 1984        NA             40.5 AF      AFG                 NA
+##  7 Afghan~ 1985        NA             42.4 AF      AFG                 NA
+##  8 Afghan~ 1986        NA             43.4 AF      AFG                 NA
+##  9 Afghan~ 1987        NA             45.5 AF      AFG                 NA
+## 10 Afghan~ 1988        NA             47.9 AF      AFG                 NA
+## # ... with 58,842 more rows, and 20 more variables:
+## #   primary_school_enrollment &lt;dbl&gt;, mortality_rate &lt;dbl&gt;,
+## #   fertility_rate &lt;dbl&gt;, iso3c.y &lt;chr&gt;, iso2c.y &lt;chr&gt;, capital_city &lt;chr&gt;,
+## #   longitude &lt;dbl&gt;, latitude &lt;dbl&gt;, region_iso3c &lt;chr&gt;, region_iso2c &lt;chr&gt;,
+## #   region &lt;chr&gt;, admin_region_iso3c &lt;chr&gt;, admin_region_iso2c &lt;chr&gt;,
+## #   admin_region &lt;chr&gt;, income_level_iso3c &lt;chr&gt;, income_level_iso2c &lt;chr&gt;,
+## #   income_level &lt;chr&gt;, lending_type_iso3c &lt;chr&gt;, lending_type_iso2c &lt;chr&gt;,
+## #   lending_type &lt;chr&gt;</code></pre>
+<p>We are using a full outer join for hiv, life expectancy and worldbank data since each of the three may have NA in some places but we want all of the data for analysis.
+We do a left join of the above three with countries because we want the country data corresponding to each entry for the above parameters.</p>
+<p>Relationship between HIV prevalence and life expectancy</p>
+<pre class="r"><code>main_table_na&lt;- main_table %&gt;% 
+  drop_na()
+
+main_table_na</code></pre>
+<pre><code>## # A tibble: 1,064 x 27
+##    country year  hiv_rate life_expectancy~ iso2c.x iso3c.x GDP_per_capita
+##    &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;
+##  1 Algeria 1990      0.06             71.7 DZ      DZA              3572.
+##  2 Algeria 1991      0.06             72.2 DZ      DZA              3444.
+##  3 Algeria 1992      0.06             72.5 DZ      DZA              3424.
+##  4 Algeria 1993      0.06             72.7 DZ      DZA              3279.
+##  5 Algeria 1994      0.06             72.8 DZ      DZA              3183.
+##  6 Algeria 1995      0.06             72.9 DZ      DZA              3241.
+##  7 Algeria 1996      0.06             73.3 DZ      DZA              3315.
+##  8 Algeria 1997      0.06             73.2 DZ      DZA              3298.
+##  9 Algeria 1999      0.06             73.9 DZ      DZA              3474.
+## 10 Algeria 2000      0.06             74   DZ      DZA              3558.
+## # ... with 1,054 more rows, and 20 more variables:
+## #   primary_school_enrollment &lt;dbl&gt;, mortality_rate &lt;dbl&gt;,
+## #   fertility_rate &lt;dbl&gt;, iso3c.y &lt;chr&gt;, iso2c.y &lt;chr&gt;, capital_city &lt;chr&gt;,
+## #   longitude &lt;dbl&gt;, latitude &lt;dbl&gt;, region_iso3c &lt;chr&gt;, region_iso2c &lt;chr&gt;,
+## #   region &lt;chr&gt;, admin_region_iso3c &lt;chr&gt;, admin_region_iso2c &lt;chr&gt;,
+## #   admin_region &lt;chr&gt;, income_level_iso3c &lt;chr&gt;, income_level_iso2c &lt;chr&gt;,
+## #   income_level &lt;chr&gt;, lending_type_iso3c &lt;chr&gt;, lending_type_iso2c &lt;chr&gt;,
+## #   lending_type &lt;chr&gt;</code></pre>
+<pre class="r"><code>plot1&lt;-ggplot(main_table_na, aes(x=hiv_rate, y=life_expectancy_rate)) + 
+  geom_point()+
+  geom_smooth()+
+  geom_jitter(width = 0.1, height = 0.1) +
+  #geom_smooth(method=lm)
+  facet_wrap(~ region,scales=&quot;free&quot;) +
+  theme_bw()+
+  labs(title = &quot;How does HIV prevalence affect our age?&quot;, # add labels to the df
+       subtitle = &quot;Split by region&quot;,
+       caption = &quot;Source: https://www.gapminder.org/data&quot; # Source
+       ) +
+  
+  xlab(&quot;People with HIV per 100 for ages 15-49&quot;) + # x-axis
+  ylab(&quot;Life expectancy&quot;)
+
+plot1</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : pseudoinverse used at 0.0548</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : neighborhood radius 0.1452</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : reciprocal condition number 6.4018e-016</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : There are other near singularities as well. 0.0196</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+## 0.0548</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+## 0.1452</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+## number 6.4018e-016</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : There are other near
+## singularities as well. 0.0196</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : pseudoinverse used at 0.0593</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : neighborhood radius 0.0407</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : reciprocal condition number 0</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : There are other near singularities as well. 0.019796</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+## 0.0593</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+## 0.0407</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+## number 0</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : There are other near
+## singularities as well. 0.019796</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : pseudoinverse used at 0.0578</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : neighborhood radius 0.1422</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : reciprocal condition number 1.6457e-016</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
+## parametric, : There are other near singularities as well. 0.0196</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+## 0.0578</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+## 0.1422</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+## number 1.6457e-016</code></pre>
+<pre><code>## Warning in predLoess(object$y, object$x, newx = if
+## (is.null(newdata)) object$x else if (is.data.frame(newdata))
+## as.matrix(model.frame(delete.response(terms(object)), : There are other near
+## singularities as well. 0.0196</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>From the graphs above, we can infer that the data is right skewed which means that having lower HIV prevalence generally has a higher life expectancy. This is particularly true for the Asian and American countries, however in the African countries we see the higher HIV prevalence and a lower life expectancy.</p>
+<ol style="list-style-type: decimal">
+<li>What is the relationship between fertility rate and GDP per capita? Generate a scatterplot with a smoothing line to report your results. You may find facetting by region useful</li>
+</ol>
+<pre class="r"><code>grouping_table&lt;-main_table%&gt;% 
+  drop_na(c(&#39;GDP_per_capita&#39;,&#39;fertility_rate&#39;))%&gt;%
+  group_by(region,year) %&gt;%
+  summarize(mean_GDP=mean(GDP_per_capita),mean_fertility_rate=mean(fertility_rate))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;region&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>grouping_table</code></pre>
+<pre><code>## # A tibble: 399 x 4
+## # Groups:   region [7]
+##    region              year  mean_GDP mean_fertility_rate
+##    &lt;chr&gt;               &lt;chr&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+##  1 East Asia &amp; Pacific 1960     3272.                5.61
+##  2 East Asia &amp; Pacific 1961     3371.                5.52
+##  3 East Asia &amp; Pacific 1962     3459.                5.47
+##  4 East Asia &amp; Pacific 1963     3653.                5.41
+##  5 East Asia &amp; Pacific 1964     3837.                5.33
+##  6 East Asia &amp; Pacific 1965     4015.                5.23
+##  7 East Asia &amp; Pacific 1966     4156.                5.09
+##  8 East Asia &amp; Pacific 1967     4403.                4.99
+##  9 East Asia &amp; Pacific 1968     4692.                4.88
+## 10 East Asia &amp; Pacific 1969     5032.                4.76
+## # ... with 389 more rows</code></pre>
+<pre class="r"><code> plot2&lt;- ggplot(grouping_table, aes(x=mean_fertility_rate, y=mean_GDP)) + 
+  geom_point()+
+  geom_smooth()+
+  #geom_smooth(method=lm)
+ facet_wrap(~ region, scales=&#39;free&#39;) +
+   theme_bw()+
+ labs(title = &quot;Fertility rate and GDP, are the related?&quot;, # add labels to the df
+       subtitle = &quot;Split by region&quot;,
+       caption = &quot;Source: https://www.gapminder.org/data&quot; # Source
+       ) +
+  
+  xlab(&quot;Mean births per woman&quot;) + # x-axis
+  ylab(&quot;Mean GDP&quot;)
+
+
+plot2</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+We see that there is an almost linear relation between fertility rate and GDP for most regions except ‘Middle East and North Africa’. We also see a steep trend in regions with more developing countries like in the case of ‘South Asia’ and ‘Latin America’.</p>
+<p>How has the Mortality rate changed by region?</p>
+<pre class="r"><code>plot_mortality&lt;-main_table %&gt;%
+  drop_na(mortality_rate) %&gt;%
+  group_by(region,year)%&gt;%
+  summarize(mean_mortality_rate=mean(mortality_rate))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;region&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>plot_mortality</code></pre>
+<pre><code>## # A tibble: 399 x 3
+## # Groups:   region [7]
+##    region              year  mean_mortality_rate
+##    &lt;chr&gt;               &lt;chr&gt;               &lt;dbl&gt;
+##  1 East Asia &amp; Pacific 1960                112. 
+##  2 East Asia &amp; Pacific 1961                107. 
+##  3 East Asia &amp; Pacific 1962                102. 
+##  4 East Asia &amp; Pacific 1963                101. 
+##  5 East Asia &amp; Pacific 1964                 96.2
+##  6 East Asia &amp; Pacific 1965                 92.4
+##  7 East Asia &amp; Pacific 1966                 88.8
+##  8 East Asia &amp; Pacific 1967                 85.3
+##  9 East Asia &amp; Pacific 1968                 86.9
+## 10 East Asia &amp; Pacific 1969                 85.3
+## # ... with 389 more rows</code></pre>
+<pre class="r"><code>plot3&lt;- ggplot(plot_mortality, aes(x=year, y=mean_mortality_rate, group=region)) + 
+  geom_line(xaxt=&#39;n&#39;)+
+  facet_wrap(~region,scales=&#39;free&#39;)+ 
+  theme_minimal()+
+  theme(axis.text.x=element_blank())+
+#splitting by region
+  #Adding labels
+  labs(title = &quot;How has mortality rate changed over the years?&quot;,
+       caption = &quot;Source: https://www.gapminder.org/data&quot;) +
+  xlab(&quot;Years&quot;) +
+  ylab(&quot;mortality rate (per 1000 live births)&quot;)</code></pre>
+<pre><code>## Warning: Ignoring unknown parameters: xaxt</code></pre>
+<pre class="r"><code>  #geom_smooth(method=lm)
+#+facet_wrap(~ income_level)
+
+plot3</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+Which countries had the most and least improvement in mortality rate?</p>
+<pre class="r"><code>mortality_rate_filtered&lt;-main_table %&gt;%
+select(c(country,region,year,mortality_rate)) %&gt;% #selecting relevant columns
+  pivot_wider(names_from=year,values_from=mortality_rate)%&gt;% #adding pivot to convert to columns
+  rename(year1=&#39;1979&#39;,
+         year2=&#39;2011&#39;) %&gt;% #renaming the columns
+  mutate(change=((year2-year1)/year1)*-100)%&gt;% #finding change percentage
+  select(c(country,change,region))%&gt;%
+  drop_na(change)%&gt;% #dropping values with NA
+  arrange(desc(change)) #arranging in descending
+
+best_5&lt;- mortality_rate_filtered %&gt;% top_n(n=-5,wt=change) #identifying best 5 countries 
+worst_5&lt;-mortality_rate_filtered %&gt;% 
+  top_n(n=5,wt=change) #identifying worst 5 countries 
+  
+best_5</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##   country                  change region                   
+##   &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;                    
+## 1 Eswatini                  35.1  Sub-Saharan Africa       
+## 2 Zimbabwe                  26.0  Sub-Saharan Africa       
+## 3 Lesotho                   26.0  Sub-Saharan Africa       
+## 4 Central African Republic  23.6  Sub-Saharan Africa       
+## 5 Dominica                   1.91 Latin America &amp; Caribbean</code></pre>
+<pre class="r"><code>worst_5</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##   country      change region                    
+##   &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;                     
+## 1 Maldives       91.8 South Asia                
+## 2 Oman           90.4 Middle East &amp; North Africa
+## 3 Korea, Rep.    89.5 East Asia &amp; Pacific       
+## 4 Saudi Arabia   89.0 Middle East &amp; North Africa
+## 5 Portugal       87.5 Europe &amp; Central Asia</code></pre>
+<p>We see that Asian countries have had the major change in mortality rate and Subsaharan African countries have the least change in mortality rates.</p>
+<p>Relationship between primary school enrollment and fertility rate</p>
+<pre class="r"><code>plot4&lt;- ggplot(main_table, aes(x=fertility_rate, y=primary_school_enrollment,colour=region)) +  #defining the x and y axis
+  geom_point()+ #plotting the scatter plot
+geom_smooth()+ #adding the trend line
+  #Adding labels
+  labs(title = &quot;How are primary school enrollment and fertility rate correlated?&quot;,
+       caption = &quot;Source: https://www.gapminder.org/data&quot;) +
+  xlab(&quot;Births per woman&quot;) +
+  ylab(&quot;% enrollment in primary school&quot;)
+
+
+plot4</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>## Warning: Removed 54818 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 54818 rows containing missing values (geom_point).</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well.</p>
+<pre class="r"><code>corrmat&lt;-main_table %&gt;%
+  drop_na(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate) %&gt;%
+  select(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate)
+  
+cormat &lt;- round(cor(corrmat),2)
+head(cormat)</code></pre>
+<pre><code>##                           mortality_rate fertility_rate life_expectancy_rate
+## mortality_rate                      1.00           0.90                -0.88
+## fertility_rate                      0.90           1.00                -0.81
+## life_expectancy_rate               -0.88          -0.81                 1.00
+## primary_school_enrollment          -0.83          -0.78                 0.71
+## hiv_rate                            0.34           0.30                -0.59
+##                           primary_school_enrollment hiv_rate
+## mortality_rate                                -0.83     0.34
+## fertility_rate                                -0.78     0.30
+## life_expectancy_rate                           0.71    -0.59
+## primary_school_enrollment                      1.00    -0.17
+## hiv_rate                                      -0.17     1.00</code></pre>
+<pre class="r"><code>library(reshape2)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     smiths</code></pre>
+<pre class="r"><code>melted_cormat &lt;- melt(cormat)
+head(melted_cormat)</code></pre>
+<pre><code>##                        Var1           Var2 value
+## 1            mortality_rate mortality_rate  1.00
+## 2            fertility_rate mortality_rate  0.90
+## 3      life_expectancy_rate mortality_rate -0.88
+## 4 primary_school_enrollment mortality_rate -0.83
+## 5                  hiv_rate mortality_rate  0.34
+## 6            mortality_rate fertility_rate  0.90</code></pre>
+<pre class="r"><code>ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.facebook.com/Ishita14091996/" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://github.com/ishita149/" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/ishitagupta14/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Ishita Gupta</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>
