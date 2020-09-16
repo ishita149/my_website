@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Movies</title>
+      <link>/blogs/project1/</link>
+      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
+      
+      <guid>/blogs/project1/</guid>
+      <description>R Markdown#Loading datamovies&amp;lt;- read.csv(&amp;quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv&amp;quot;)glimpse(movies) #viewing data## Rows: 2,961## Columns: 11## $ title &amp;lt;chr&amp;gt; &amp;quot;Avatar&amp;quot;, &amp;quot;Titanic&amp;quot;, &amp;quot;Jurassic World&amp;quot;, &amp;quot;The Ave...## $ genre &amp;lt;chr&amp;gt; &amp;quot;Action&amp;quot;, &amp;quot;Drama&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;...## $ director &amp;lt;chr&amp;gt; &amp;quot;James Cameron&amp;quot;, &amp;quot;James Cameron&amp;quot;, &amp;quot;Colin Trevor...## $ year &amp;lt;int&amp;gt; 2009, 1997, 2015, 2012, 2008, 1999, 1977, 2015,...## $ duration &amp;lt;int&amp;gt; 178, 194, 124, 173, 152, 136, 125, 141, 164, 93.</description>
+    </item>
+    
+    <item>
       <title>NYT masks</title>
       <link>/blogs/blog5/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>

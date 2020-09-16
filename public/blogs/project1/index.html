@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="I&#39;m trying to explore the world of data. Here&#39;s my journey!">
+	<meta name="author" content="Portfolio : Ishita Gupta">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>Movies &middot; Portfolio website for Ishita Gupta</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Ishita Gupta</strong> <span></span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+                <li><a href="/about%20me">About me</a></li>
+            
+                <li><a href="/projects">Projects</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>Movies</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                            
+                            
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<pre class="r"><code>#Loading data
+movies&lt;- read.csv(&quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv&quot;)
+
+glimpse(movies) #viewing data</code></pre>
+<pre><code>## Rows: 2,961
+## Columns: 11
+## $ title               &lt;chr&gt; &quot;Avatar&quot;, &quot;Titanic&quot;, &quot;Jurassic World&quot;, &quot;The Ave...
+## $ genre               &lt;chr&gt; &quot;Action&quot;, &quot;Drama&quot;, &quot;Action&quot;, &quot;Action&quot;, &quot;Action&quot;...
+## $ director            &lt;chr&gt; &quot;James Cameron&quot;, &quot;James Cameron&quot;, &quot;Colin Trevor...
+## $ year                &lt;int&gt; 2009, 1997, 2015, 2012, 2008, 1999, 1977, 2015,...
+## $ duration            &lt;int&gt; 178, 194, 124, 173, 152, 136, 125, 141, 164, 93...
+## $ gross               &lt;int&gt; 760505847, 658672302, 652177271, 623279547, 533...
+## $ budget              &lt;int&gt; 237000000, 200000000, 150000000, 220000000, 185...
+## $ cast_facebook_likes &lt;int&gt; 4834, 45223, 8458, 87697, 57802, 37723, 13485, ...
+## $ votes               &lt;int&gt; 886204, 793059, 418214, 995415, 1676169, 534658...
+## $ reviews             &lt;int&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752,...
+## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7....</code></pre>
+<pre class="r"><code>#now we produce a summary statistic of the data
+skim(movies)</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-2">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">movies</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">2961</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">11</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">3</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">8</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">title</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">83</td>
+<td align="right">0</td>
+<td align="right">2907</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">genre</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">17</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">director</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">32</td>
+<td align="right">0</td>
+<td align="right">1366</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="6%" />
+<col width="8%" />
+<col width="7%" />
+<col width="7%" />
+<col width="4%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">year</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2002.90</td>
+<td align="right">9.95</td>
+<td align="right">1920.0</td>
+<td align="right">1999.0</td>
+<td align="right">2004.0</td>
+<td align="right">2010.0</td>
+<td align="right">2016.0</td>
+<td align="left">▁▁▁▂▇</td>
+</tr>
+<tr class="even">
+<td align="left">duration</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">109.65</td>
+<td align="right">22.17</td>
+<td align="right">37.0</td>
+<td align="right">95.0</td>
+<td align="right">106.0</td>
+<td align="right">119.0</td>
+<td align="right">330.0</td>
+<td align="left">▃▇▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">gross</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">58090400.90</td>
+<td align="right">72469621.94</td>
+<td align="right">703.0</td>
+<td align="right">12276810.0</td>
+<td align="right">34703228.0</td>
+<td align="right">75590286.0</td>
+<td align="right">760505847.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">budget</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">40619384.06</td>
+<td align="right">43682007.78</td>
+<td align="right">218.0</td>
+<td align="right">11000000.0</td>
+<td align="right">26000000.0</td>
+<td align="right">55000000.0</td>
+<td align="right">300000000.0</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">cast_facebook_likes</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">12393.76</td>
+<td align="right">20530.11</td>
+<td align="right">0.0</td>
+<td align="right">2241.0</td>
+<td align="right">4604.0</td>
+<td align="right">16926.0</td>
+<td align="right">656730.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">votes</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">109307.49</td>
+<td align="right">158143.91</td>
+<td align="right">5.0</td>
+<td align="right">19918.0</td>
+<td align="right">55749.0</td>
+<td align="right">133348.0</td>
+<td align="right">1689764.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">reviews</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">503.31</td>
+<td align="right">493.74</td>
+<td align="right">2.0</td>
+<td align="right">199.0</td>
+<td align="right">364.0</td>
+<td align="right">631.0</td>
+<td align="right">5312.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">rating</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6.39</td>
+<td align="right">1.05</td>
+<td align="right">1.6</td>
+<td align="right">5.8</td>
+<td align="right">6.5</td>
+<td align="right">7.1</td>
+<td align="right">9.3</td>
+<td align="left">▁▁▆▇▁</td>
+</tr>
+</tbody>
+</table>
+<p>We notice that its a clean data set with no NA values.</p>
+<pre class="r"><code>movies_filtered&lt;- movies %&gt;%
+  filter(year&gt;=2000) 
+
+ plot1&lt;- ggplot(movies_filtered, aes(x=budget, y=gross, colour=genre)) + geom_point()+
+   labs(title=&quot;How does gross profit change with budget?&quot;)
+ 
+ plot1</code></pre>
+<p><img src="/blogs/project1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We see that most of the movies have a linear relationship in terms of budget and</p>
+<pre class="r"><code> plot1&lt;- ggplot(movies_filtered, aes(x=genre,y=gross)) + 
+  geom_boxplot()+
+  theme(axis.text.x=element_text(angle=90,margin = margin(0.2, unit = &quot;cm&quot;),vjust =1))
+ 
+ plot1</code></pre>
+<p><img src="/blogs/project1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>area_y&lt;-ggplot(movies_filtered, aes(x=year, y=gross, colour=genre)) + 
+    geom_point()
+
+area_y</code></pre>
+<p><img src="/blogs/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.facebook.com/Ishita14091996/" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://github.com/ishita149/" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/ishitagupta14/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Ishita Gupta</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>
