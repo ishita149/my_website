@@ -1,0 +1,69 @@
+---
+title: "post1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(ggplot2)
+library(ggrepel) # Added for Challenge 1
+library(scales) # Added for Challenge 2
+library(tidytext) # Added for Challenge 2
+```
+
+```{r, echo=TRUE}
+#Loading data
+movies<- read.csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv")
+
+glimpse(movies) #viewing data
+```
+```{r, echo=TRUE}
+#now we produce a summary statistic of the data
+skim(movies)
+```
+We notice that its a clean data set with no NA values. 
+
+```{r, echo=TRUE}
+
+movies_filtered<- movies %>%
+  filter(year>=2000) 
+
+ plot1<- ggplot(movies_filtered, aes(x=budget, y=gross, colour=genre)) + geom_point()+
+   labs(title="How does gross profit change with budget?")
+ 
+ plot1
+```
+
+We see that most of the movies have a linear relationship in terms of budget and 
+
+```{r, echo=TRUE}
+
+ plot1<- ggplot(movies_filtered, aes(x=genre,y=gross)) + 
+  geom_boxplot()+
+  theme(axis.text.x=element_text(angle=90,margin = margin(0.2, unit = "cm"),vjust =1))
+ 
+ plot1
+```
+
+
+```{r, echo=TRUE}
+area_y<-ggplot(movies_filtered, aes(x=year, y=gross, colour=genre)) + 
+    geom_point()
+
+area_y
+```
