@@ -3,7 +3,7 @@ title: "Gapminder data"
 date: '2017-10-31T22:42:51-05:00'
 description: How has human life changed over time?
 draft: no
-image: pic07.jpg
+image: pic03.png
 keywords: ''
 slug: gapminder
 categories:
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r load-libraries, include=FALSE}
+```{r load-libraries, include=FALSE, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(mosaic)
 library(ggthemes)
