@@ -1,3 +1,4 @@
+
 # Site settings
 baseURL = "https://ishita-gupta.netlify.app"
 languageCode = "en-us"
@@ -124,7 +125,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Gapminder data"
       subtitle = "How has human lifestyle changed over the years?"
-      image = "pic03.jpg"
+      image = "pic03.png"
       url = "blogs/gapminder"
 
     [[params.tiles.showcase]]
