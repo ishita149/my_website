@@ -63,7 +63,7 @@ Among other things, the data set includes employees' income, their distance from
 ## Load data
 First let us load the data
 
-```{r}
+```{r , warning=FALSE}
 
 hr_dataset <- read_csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/datasets_1067_1925_WA_Fn-UseC_-HR-Employee-Attrition.csv")
 glimpse(hr_dataset)

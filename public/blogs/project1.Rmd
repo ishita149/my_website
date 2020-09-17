@@ -34,19 +34,19 @@ library(scales) # Added for Challenge 2
 library(tidytext) # Added for Challenge 2
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 #Loading data
 movies<- read.csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv")
 
 glimpse(movies) #viewing data
 ```
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 #now we produce a summary statistic of the data
 skim(movies)
 ```
 We notice that its a clean data set with no NA values. 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 movies_filtered<- movies %>%
   filter(year>=2000) 
@@ -59,7 +59,7 @@ movies_filtered<- movies %>%
 
 We see that most of the movies have a linear relationship in terms of budget and 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
  plot1<- ggplot(movies_filtered, aes(x=genre,y=gross)) + 
   geom_boxplot()+
@@ -69,7 +69,7 @@ We see that most of the movies have a linear relationship in terms of budget and
 ```
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 area_y<-ggplot(movies_filtered, aes(x=year, y=gross, colour=genre)) + 
     geom_point()
 

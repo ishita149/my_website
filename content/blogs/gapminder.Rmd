@@ -34,7 +34,7 @@ library(infer)
 
 # Gapminder revisited
 
-Recall the `gapminder` data frame from the gapminder package. That data frame contains just six columns from the larger [data in Gapminder World](https://www.gapminder.org/data/). In this part, you will join a few dataframes with more data than the 'gapminder' package. Specifically, you will look at data on 
+That data frame contains just six columns from the larger [data in Gapminder World](https://www.gapminder.org/data/). In this part, we join a few dataframes with more data than the 'gapminder' package. Specifically, look at data on 
 
 
 - Life expectancy at birth (life_expectancy_years.csv)
@@ -44,9 +44,9 @@ Recall the `gapminder` data frame from the gapminder package. That data frame co
 - Mortality rate, for under 5, per 1000 live births (https://data.worldbank.org/indicator/SH.DYN.MORT)
 - HIV prevalence (adults_with_hiv_percent_age_15_49.csv): The estimated number of people living with HIV per 100 population of age group 15-49.
 
-You must use the `wbstats` package to download data from the World Bank. The relevant World Bank indicators are `SP.DYN.TFRT.IN`, `SE.PRM.NENR`, `NY.GDP.PCAP.KD`, and `SH.DYN.MORT`
+We also use the `wbstats` package to download data from the World Bank. The relevant World Bank indicators are `SP.DYN.TFRT.IN`, `SE.PRM.NENR`, `NY.GDP.PCAP.KD`, and `SH.DYN.MORT`
 
-```{r, get_data, cache=TRUE}
+```{r, get_data, cache=TRUE , warning=FALSE}
 
 # load gapminder HIV data
 hiv <- read_csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session4-workshop2/data/adults_with_hiv_percent_age_15_49.csv")
@@ -70,12 +70,10 @@ view(hiv)
 view(life_expectancy)
 view(worldbank_data)
 ```
-
-You have to join the 3 dataframes (life_expectancy, worldbank_data, and HIV) into one. You may need to tidy your data first and then perform [join operations](http://r4ds.had.co.nz/relational-data.html). Think about what type makes the most sense **and explain why you chose it**.
  
 We clean up the data and then join them here.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, , warning=FALSE}
 tidy_hiv <-hiv %>%
   pivot_longer(cols= 2:34, names_to = "year", values_to = "hiv_rate") #Creating a new column for year and hiv_rate using pivot
 
@@ -108,7 +106,7 @@ We do a left join of the above three with countries because we want the country 
 
 Relationship between HIV prevalence and life expectancy
 
-```{r, echo=TRUE}
+```{r, echo=TRUE , warning=FALSE}
 main_table_na<- main_table %>% 
   drop_na()
 
@@ -136,7 +134,7 @@ From the graphs above, we can infer that the data is right skewed which means th
 
 1. What is the relationship between fertility rate and GDP per capita? Generate a scatterplot with a smoothing line to report your results. You may find facetting by region useful
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 grouping_table<-main_table%>% 
   drop_na(c('GDP_per_capita','fertility_rate'))%>%
   group_by(region,year) %>%
@@ -164,7 +162,7 @@ We see that there is an almost linear relation between fertility rate and GDP fo
 
 How has the Mortality rate changed by region?
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 plot_mortality<-main_table %>%
   drop_na(mortality_rate) %>%
   group_by(region,year)%>%
@@ -190,7 +188,7 @@ plot3
 ```
 Which countries had the most and least improvement in mortality rate? 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 mortality_rate_filtered<-main_table %>%
 select(c(country,region,year,mortality_rate)) %>% #selecting relevant columns
   pivot_wider(names_from=year,values_from=mortality_rate)%>% #adding pivot to convert to columns
@@ -212,7 +210,7 @@ We see that Asian countries have had the major change in mortality rate and Subs
 
 Relationship between primary school enrollment and fertility rate
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 plot4<- ggplot(main_table, aes(x=fertility_rate, y=primary_school_enrollment,colour=region)) +  #defining the x and y axis
   geom_point()+ #plotting the scatter plot
@@ -228,7 +226,7 @@ plot4
 ```
 We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well. 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 corrmat<-main_table %>%
   drop_na(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate) %>%
   select(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate)

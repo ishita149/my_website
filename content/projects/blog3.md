@@ -8,5 +8,5 @@ draft: false
 image: pic08.jpg
 keywords: ""
 slug: tempus
-title: Tempus
+title: Education
 ---

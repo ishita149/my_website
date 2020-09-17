@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Aliquam</title>
+      <title>Where am I from?</title>
       <link>/projects/aliquam/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
@@ -21,7 +21,7 @@
     </item>
     
     <item>
-      <title>Tempus</title>
+      <title>Education</title>
       <link>/projects/tempus/</link>
       <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
       
@@ -30,21 +30,21 @@
     </item>
     
     <item>
-      <title>Magna</title>
+      <title>Work Experience</title>
       <link>/projects/magna/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:09 -0500</pubDate>
+      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
       
       <guid>/projects/magna/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ipsum</title>
+      <title>Interests</title>
       <link>/projects/ipsum/</link>
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/projects/ipsum/</guid>
-      <description>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</description>
+      <description></description>
     </item>
     
   </channel>

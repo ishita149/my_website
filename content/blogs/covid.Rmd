@@ -30,11 +30,6 @@ library(vroom)
 library(infer)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
 statewise<-vroom("C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv")
@@ -43,14 +38,14 @@ covid_data<-read_csv("C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetail
 
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 skim(covid_data)
 skim(statewise)
 ```
 
 How has testing increased in India?
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 testing <- covid_data %>%
   drop_na(TotalSamples,Positive) %>%
   filter(Date<'2020-08-05') %>%
@@ -65,7 +60,7 @@ plot1<- ggplot(testing,aes(x=Date,y=sum_positive))+
 plot1
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 testing <- covid_data %>%
   drop_na(TotalSamples,Positive) %>%
   mutate(testing_in_millions=TotalSamples/1000000) %>%
@@ -81,7 +76,7 @@ plot2<- ggplot(testing,aes(x=Date,y=sum_testing))+
 plot2
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 state_data <- statewise %>%
   drop_na(Confirmed,Deaths,Cured) %>%
@@ -93,7 +88,7 @@ state_data
 
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 state_data <- statewise %>%
  # drop_na(Confirmed,Deaths,Cured) %>%
@@ -105,7 +100,7 @@ state_data
 
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 worst_hit_confirmed <- statewise %>%
   #drop_na(Confirmed,Deaths,Cured) %>%
@@ -119,7 +114,7 @@ worst_hit_confirmed
 
 ```
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 worst_hit_deaths <- statewise %>%
   #drop_na(Confirmed,Deaths,Cured) %>%
@@ -134,7 +129,7 @@ worst_hit_deaths
 ```
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 
 best_recovery_rate <- statewise %>%
   #drop_na(Confirmed,Deaths,Cured) %>%

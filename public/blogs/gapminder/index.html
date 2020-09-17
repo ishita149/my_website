@@ -52,11 +52,9 @@
             
                 <li><a href="/">Home</a></li>
             
-                <li><a href="/blogs">Blogs</a></li>
+                <li><a href="/blogs">Projects</a></li>
             
-                <li><a href="/about%20me">About me</a></li>
-            
-                <li><a href="/projects">Projects</a></li>
+                <li><a href="/projects">About me</a></li>
             
 
         </ul>
@@ -84,7 +82,7 @@
 
 <div id="gapminder-revisited" class="section level1">
 <h1>Gapminder revisited</h1>
-<p>Recall the <code>gapminder</code> data frame from the gapminder package. That data frame contains just six columns from the larger <a href="https://www.gapminder.org/data/">data in Gapminder World</a>. In this part, you will join a few dataframes with more data than the ‘gapminder’ package. Specifically, you will look at data on</p>
+<p>That data frame contains just six columns from the larger <a href="https://www.gapminder.org/data/">data in Gapminder World</a>. In this part, we join a few dataframes with more data than the ‘gapminder’ package. Specifically, look at data on</p>
 <ul>
 <li>Life expectancy at birth (life_expectancy_years.csv)</li>
 <li>GDP per capita in constant 2010 US$ (<a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.KD" class="uri">https://data.worldbank.org/indicator/NY.GDP.PCAP.KD</a>)</li>
@@ -93,7 +91,7 @@
 <li>Mortality rate, for under 5, per 1000 live births (<a href="https://data.worldbank.org/indicator/SH.DYN.MORT" class="uri">https://data.worldbank.org/indicator/SH.DYN.MORT</a>)</li>
 <li>HIV prevalence (adults_with_hiv_percent_age_15_49.csv): The estimated number of people living with HIV per 100 population of age group 15-49.</li>
 </ul>
-<p>You must use the <code>wbstats</code> package to download data from the World Bank. The relevant World Bank indicators are <code>SP.DYN.TFRT.IN</code>, <code>SE.PRM.NENR</code>, <code>NY.GDP.PCAP.KD</code>, and <code>SH.DYN.MORT</code></p>
+<p>We also use the <code>wbstats</code> package to download data from the World Bank. The relevant World Bank indicators are <code>SP.DYN.TFRT.IN</code>, <code>SE.PRM.NENR</code>, <code>NY.GDP.PCAP.KD</code>, and <code>SH.DYN.MORT</code></p>
 <pre class="r"><code># load gapminder HIV data
 hiv &lt;- read_csv(&quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session4-workshop2/data/adults_with_hiv_percent_age_15_49.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
@@ -128,7 +126,6 @@ view(countries)
 view(hiv)
 view(life_expectancy)
 view(worldbank_data)</code></pre>
-<p>You have to join the 3 dataframes (life_expectancy, worldbank_data, and HIV) into one. You may need to tidy your data first and then perform <a href="http://r4ds.had.co.nz/relational-data.html">join operations</a>. Think about what type makes the most sense <strong>and explain why you chose it</strong>.</p>
 <p>We clean up the data and then join them here.</p>
 <pre class="r"><code>tidy_hiv &lt;-hiv %&gt;%
   pivot_longer(cols= 2:34, names_to = &quot;year&quot;, values_to = &quot;hiv_rate&quot;) #Creating a new column for year and hiv_rate using pivot
@@ -237,78 +234,6 @@ main_table_na</code></pre>
 
 plot1</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.0548</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 0.1452</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 6.4018e-016</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 0.0196</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.0548</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
-## 0.1452</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 6.4018e-016</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 0.0196</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.0593</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 0.0407</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 0.019796</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.0593</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
-## 0.0407</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 0.019796</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.0578</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 0.1422</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 1.6457e-016</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 0.0196</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.0578</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
-## 0.1422</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 1.6457e-016</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 0.0196</code></pre>
 <p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>From the graphs above, we can infer that the data is right skewed which means that having lower HIV prevalence generally has a higher life expectancy. This is particularly true for the Asian and American countries, however in the African countries we see the higher HIV prevalence and a lower life expectancy.</p>
 <ol style="list-style-type: decimal">
@@ -386,9 +311,8 @@ We see that there is an almost linear relation between fertility rate and GDP fo
   labs(title = &quot;How has mortality rate changed over the years?&quot;,
        caption = &quot;Source: https://www.gapminder.org/data&quot;) +
   xlab(&quot;Years&quot;) +
-  ylab(&quot;mortality rate (per 1000 live births)&quot;)</code></pre>
-<pre><code>## Warning: Ignoring unknown parameters: xaxt</code></pre>
-<pre class="r"><code>  #geom_smooth(method=lm)
+  ylab(&quot;mortality rate (per 1000 live births)&quot;)
+  #geom_smooth(method=lm)
 #+facet_wrap(~ income_level)
 
 plot3</code></pre>
@@ -440,8 +364,6 @@ geom_smooth()+ #adding the trend line
 
 plot4</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
-<pre><code>## Warning: Removed 54818 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 54818 rows containing missing values (geom_point).</code></pre>
 <p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well.</p>
 <pre class="r"><code>corrmat&lt;-main_table %&gt;%
