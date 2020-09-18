@@ -54,8 +54,6 @@
             
                 <li><a href="/blogs">Projects</a></li>
             
-                <li><a href="/projects">About me</a></li>
-            
 
         </ul>
         <ul class="actions vertical">
@@ -80,6 +78,8 @@
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
+<p>#India Covid data</p>
+<p>We analyze the Covid testing and cases data for India.</p>
 <pre class="r"><code>statewise&lt;-vroom(&quot;C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv&quot;)</code></pre>
 <pre><code>## Rows: 6,316
 ## Columns: 9
@@ -98,6 +98,7 @@
 ##   Negative = col_double(),
 ##   Positive = col_double()
 ## )</code></pre>
+<p>We now produce the summary statistics.</p>
 <pre class="r"><code>skim(covid_data)</code></pre>
 <table>
 <caption><span id="tab:unnamed-chunk-1">Table 1: </span>Data summary</caption>
@@ -436,33 +437,27 @@
 </tr>
 </tbody>
 </table>
-<p>How has testing increased in India?</p>
+<div id="how-has-testing-increased-in-india" class="section level2">
+<h2>How has testing increased in India?</h2>
 <pre class="r"><code>testing &lt;- covid_data %&gt;%
   drop_na(TotalSamples,Positive) %&gt;%
   filter(Date&lt;&#39;2020-08-05&#39;) %&gt;%
   group_by(Date) %&gt;%
-  summarise(sum_testing=sum(TotalSamples),sum_positive=sum(Positive))</code></pre>
+  summarise(sum_testing=sum(TotalSamples)/1000000)</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>testing</code></pre>
-<pre><code>## # A tibble: 126 x 3
-##    Date       sum_testing sum_positive
-##    &lt;date&gt;           &lt;dbl&gt;        &lt;dbl&gt;
-##  1 2020-04-01        8624          302
-##  2 2020-04-02       14906          510
-##  3 2020-04-03       20130          898
-##  4 2020-04-04        9744          306
-##  5 2020-04-05       40410         1461
-##  6 2020-04-06       28397         1196
-##  7 2020-04-07       75446         2974
-##  8 2020-04-08       63058         2473
-##  9 2020-04-09      107720         4681
-## 10 2020-04-10      153601         6490
-## # ... with 116 more rows</code></pre>
-<pre class="r"><code>plot1&lt;- ggplot(testing,aes(x=Date,y=sum_positive))+
-  geom_area()
+<pre class="r"><code>plot1&lt;- ggplot(testing,aes(x=Date,y=sum_testing))+
+  geom_area(fill=&#39;blue&#39;)+
+  labs(title=&quot;Testing distribution for India&quot;,
+       x=&quot;date&quot;,
+       y=&quot;total tests in millions&quot;)
 
 plot1</code></pre>
-<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+We see that there is an upward trend in the testing samples done for India. The lower values could also have been due to incorrect reporting of numbers in the beginning.</p>
+</div>
+<div id="how-have-positive-cases-increased" class="section level2">
+<h2>How have positive cases increased?</h2>
+<p>Now we see the how the number of positive cases have increased over time.</p>
 <pre class="r"><code>testing &lt;- covid_data %&gt;%
   drop_na(TotalSamples,Positive) %&gt;%
   mutate(testing_in_millions=TotalSamples/1000000) %&gt;%
@@ -470,26 +465,16 @@ plot1</code></pre>
   group_by(Date) %&gt;%
   summarise(sum_testing=sum(testing_in_millions),sum_positive=sum(Positive))</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>testing</code></pre>
-<pre><code>## # A tibble: 126 x 3
-##    Date       sum_testing sum_positive
-##    &lt;date&gt;           &lt;dbl&gt;        &lt;dbl&gt;
-##  1 2020-04-01     0.00862          302
-##  2 2020-04-02     0.0149           510
-##  3 2020-04-03     0.0201           898
-##  4 2020-04-04     0.00974          306
-##  5 2020-04-05     0.0404          1461
-##  6 2020-04-06     0.0284          1196
-##  7 2020-04-07     0.0754          2974
-##  8 2020-04-08     0.0631          2473
-##  9 2020-04-09     0.108           4681
-## 10 2020-04-10     0.154           6490
-## # ... with 116 more rows</code></pre>
-<pre class="r"><code>plot2&lt;- ggplot(testing,aes(x=Date,y=sum_testing))+
-  geom_area(fill=&#39;yellow&#39;)
+<pre class="r"><code>plot2&lt;- ggplot(testing,aes(x=Date,y=sum_positive))+
+  geom_area(fill=&#39;red&#39;)+
+  labs(title=&quot;How positive cases have increased over time?&quot;,
+       x=&quot;Date&quot;,
+       y=&quot;sum of posititve cases&quot;)
 
 plot2</code></pre>
-<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+## Data Wrangling</p>
+<p>We now drop the NA values from the fields we want to perform our analysis.</p>
 <pre class="r"><code>state_data &lt;- statewise %&gt;%
   drop_na(Confirmed,Deaths,Cured) %&gt;%
  # filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
@@ -511,96 +496,92 @@ plot2</code></pre>
 ##  9 02/02/20             3          0         0
 ## 10 02/03/20             5          0         0
 ## # ... with 220 more rows</code></pre>
-<pre class="r"><code>state_data &lt;- statewise %&gt;%
- # drop_na(Confirmed,Deaths,Cured) %&gt;%
- # filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
-  group_by(Date) %&gt;%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))</code></pre>
-<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>state_data</code></pre>
-<pre><code>## # A tibble: 230 x 4
-##    Date     sum_confirmed sum_deaths sum_cured
-##    &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-##  1 01/02/20             2          0         0
-##  2 01/03/20             3          0         0
-##  3 01/04/20          1834         41       144
-##  4 01/05/20         34972       1152      9065
-##  5 01/06/20        190535       5394     91819
-##  6 01/07/20        585493      17400    347979
-##  7 01/08/20       1695988      36511   1094374
-##  8 01/09/20       3691166      65288   2839882
-##  9 02/02/20             3          0         0
-## 10 02/03/20             5          0         0
-## # ... with 220 more rows</code></pre>
+</div>
+<div id="statewise-analysis" class="section level2">
+<h2>Statewise analysis</h2>
+<p>We now see how covid cases were spread over per each state.</p>
+<div id="top-10-states-with-positive-cases" class="section level3">
+<h3>Top 10 states with positive cases</h3>
 <pre class="r"><code>worst_hit_confirmed &lt;- statewise %&gt;%
   #drop_na(Confirmed,Deaths,Cured) %&gt;%
   #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
   rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
   group_by(state) %&gt;%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
-  arrange(desc(sum_confirmed))</code></pre>
+  summarise(sum_confirmed=sum(Confirmed)) %&gt;%
+  arrange(desc(sum_confirmed)) %&gt;%
+  top_n(n=10)</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Selecting by sum_confirmed</code></pre>
 <pre class="r"><code>worst_hit_confirmed</code></pre>
-<pre><code>## # A tibble: 42 x 4
-##    state          sum_confirmed sum_deaths sum_cured
-##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-##  1 Maharashtra         45420878    1542433  29474209
-##  2 Tamil Nadu          24007706     384375  18851765
-##  3 Andhra Pradesh      18127026     169332  12869306
-##  4 Karnataka           14950877     255536   9608541
-##  5 Delhi               12958046     357158  10489651
-##  6 Uttar Pradesh       10775437     185139   7457390
-##  7 West Bengal          7905733     180920   5971975
-##  8 Gujarat              6474026     262341   4808691
-##  9 Bihar                6208053      31593   4845770
-## 10 Telengana            5312127      39345   3987460
-## # ... with 32 more rows</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    state          sum_confirmed
+##    &lt;chr&gt;                  &lt;dbl&gt;
+##  1 Maharashtra         45420878
+##  2 Tamil Nadu          24007706
+##  3 Andhra Pradesh      18127026
+##  4 Karnataka           14950877
+##  5 Delhi               12958046
+##  6 Uttar Pradesh       10775437
+##  7 West Bengal          7905733
+##  8 Gujarat              6474026
+##  9 Bihar                6208053
+## 10 Telengana            5312127</code></pre>
+</div>
+<div id="top-10-states-with-deaths" class="section level3">
+<h3>Top 10 states with deaths</h3>
 <pre class="r"><code>worst_hit_deaths &lt;- statewise %&gt;%
   #drop_na(Confirmed,Deaths,Cured) %&gt;%
   #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
   rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
   group_by(state) %&gt;%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
-  arrange(desc(sum_deaths))</code></pre>
+  summarise(sum_deaths=sum(Deaths)) %&gt;%
+  arrange(desc(sum_deaths)) %&gt;%
+  top_n(n=10)</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Selecting by sum_deaths</code></pre>
 <pre class="r"><code>worst_hit_deaths</code></pre>
-<pre><code>## # A tibble: 42 x 4
-##    state          sum_confirmed sum_deaths sum_cured
-##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-##  1 Maharashtra         45420878    1542433  29474209
-##  2 Tamil Nadu          24007706     384375  18851765
-##  3 Delhi               12958046     357158  10489651
-##  4 Gujarat              6474026     262341   4808691
-##  5 Karnataka           14950877     255536   9608541
-##  6 Uttar Pradesh       10775437     185139   7457390
-##  7 West Bengal          7905733     180920   5971975
-##  8 Andhra Pradesh      18127026     169332  12869306
-##  9 Madhya Pradesh       3696668     102363   2676646
-## 10 Rajasthan            4690519      73720   3580847
-## # ... with 32 more rows</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    state          sum_deaths
+##    &lt;chr&gt;               &lt;dbl&gt;
+##  1 Maharashtra       1542433
+##  2 Tamil Nadu         384375
+##  3 Delhi              357158
+##  4 Gujarat            262341
+##  5 Karnataka          255536
+##  6 Uttar Pradesh      185139
+##  7 West Bengal        180920
+##  8 Andhra Pradesh     169332
+##  9 Madhya Pradesh     102363
+## 10 Rajasthan           73720</code></pre>
+</div>
+<div id="top-10-states-with-the-best-recovery-rate" class="section level3">
+<h3>Top 10 states with the best recovery rate</h3>
 <pre class="r"><code>best_recovery_rate &lt;- statewise %&gt;%
   #drop_na(Confirmed,Deaths,Cured) %&gt;%
   #filter(Date&lt;&#39;01/08/20&#39;) %&gt;%
   rename(state=&#39;State/UnionTerritory&#39;) %&gt;%
   group_by(state) %&gt;%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %&gt;%
-  arrange(desc(sum_cured))</code></pre>
+  summarise(sum_cured=sum(Cured)) %&gt;%
+  arrange(desc(sum_cured)) %&gt;%
+  top_n(n=10)</code></pre>
 <pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Selecting by sum_cured</code></pre>
 <pre class="r"><code>best_recovery_rate</code></pre>
-<pre><code>## # A tibble: 42 x 4
-##    state          sum_confirmed sum_deaths sum_cured
-##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-##  1 Maharashtra         45420878    1542433  29474209
-##  2 Tamil Nadu          24007706     384375  18851765
-##  3 Andhra Pradesh      18127026     169332  12869306
-##  4 Delhi               12958046     357158  10489651
-##  5 Karnataka           14950877     255536   9608541
-##  6 Uttar Pradesh       10775437     185139   7457390
-##  7 West Bengal          7905733     180920   5971975
-##  8 Bihar                6208053      31593   4845770
-##  9 Gujarat              6474026     262341   4808691
-## 10 Telengana            5312127      39345   3987460
-## # ... with 32 more rows</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    state          sum_cured
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 Maharashtra     29474209
+##  2 Tamil Nadu      18851765
+##  3 Andhra Pradesh  12869306
+##  4 Delhi           10489651
+##  5 Karnataka        9608541
+##  6 Uttar Pradesh    7457390
+##  7 West Bengal      5971975
+##  8 Bihar            4845770
+##  9 Gujarat          4808691
+## 10 Telengana        3987460</code></pre>
+</div>
+</div>
 
                         </div>
                     </section>

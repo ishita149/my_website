@@ -30,35 +30,45 @@ library(vroom)
 library(infer)
 ```
 
+#India Covid data
 
-```{r cars}
+We analyze the Covid testing and cases data for India.
+
+```{r loading, echo=TRUE}
 statewise<-vroom("C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv")
 covid_data<-read_csv("C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv")
 
 
 ```
+We now produce the summary statistics. 
 
 ```{r, echo=TRUE, warning=FALSE}
 skim(covid_data)
 skim(statewise)
 ```
 
-How has testing increased in India?
+## How has testing increased in India?
 
 ```{r, echo=TRUE, warning=FALSE}
 testing <- covid_data %>%
   drop_na(TotalSamples,Positive) %>%
   filter(Date<'2020-08-05') %>%
   group_by(Date) %>%
-  summarise(sum_testing=sum(TotalSamples),sum_positive=sum(Positive))
+  summarise(sum_testing=sum(TotalSamples)/1000000)
 
-testing
-
-plot1<- ggplot(testing,aes(x=Date,y=sum_positive))+
-  geom_area()
+plot1<- ggplot(testing,aes(x=Date,y=sum_testing))+
+  geom_area(fill='blue')+
+  labs(title="Testing distribution for India",
+       x="date",
+       y="total tests in millions")
 
 plot1
 ```
+We see that there is an upward trend in the testing samples done for India. The lower values could also have been due to incorrect reporting of numbers in the beginning.
+
+## How have positive cases increased?
+
+Now we see the how the number of positive cases have increased over time.
 
 ```{r, echo=TRUE, warning=FALSE}
 testing <- covid_data %>%
@@ -68,13 +78,18 @@ testing <- covid_data %>%
   group_by(Date) %>%
   summarise(sum_testing=sum(testing_in_millions),sum_positive=sum(Positive))
 
-testing
 
-plot2<- ggplot(testing,aes(x=Date,y=sum_testing))+
-  geom_area(fill='yellow')
+plot2<- ggplot(testing,aes(x=Date,y=sum_positive))+
+  geom_area(fill='red')+
+  labs(title="How positive cases have increased over time?",
+       x="Date",
+       y="sum of posititve cases")
 
 plot2
 ```
+## Data Wrangling
+
+We now drop the NA values from the fields we want to perform our analysis.
 
 ```{r, echo=TRUE, warning=FALSE}
 
@@ -87,18 +102,11 @@ state_data <- statewise %>%
 state_data
 
 ```
+## Statewise analysis
 
-```{r, echo=TRUE, warning=FALSE}
+We now see how covid cases were spread over per each state.
 
-state_data <- statewise %>%
- # drop_na(Confirmed,Deaths,Cured) %>%
- # filter(Date<'01/08/20') %>%
-  group_by(Date) %>%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured))
-  
-state_data
-
-```
+### Top 10 states with positive cases
 
 ```{r, echo=TRUE, warning=FALSE}
 
@@ -107,12 +115,15 @@ worst_hit_confirmed <- statewise %>%
   #filter(Date<'01/08/20') %>%
   rename(state='State/UnionTerritory') %>%
   group_by(state) %>%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
-  arrange(desc(sum_confirmed))
+  summarise(sum_confirmed=sum(Confirmed)) %>%
+  arrange(desc(sum_confirmed)) %>%
+  top_n(n=10)
   
 worst_hit_confirmed
 
+
 ```
+### Top 10 states with deaths
 
 ```{r, echo=TRUE, warning=FALSE}
 
@@ -121,13 +132,14 @@ worst_hit_deaths <- statewise %>%
   #filter(Date<'01/08/20') %>%
   rename(state='State/UnionTerritory') %>%
   group_by(state) %>%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
-  arrange(desc(sum_deaths))
+  summarise(sum_deaths=sum(Deaths)) %>%
+  arrange(desc(sum_deaths)) %>%
+  top_n(n=10)
   
 worst_hit_deaths
 
 ```
-
+### Top 10 states with the best recovery rate
 
 ```{r, echo=TRUE, warning=FALSE}
 
@@ -136,8 +148,9 @@ best_recovery_rate <- statewise %>%
   #filter(Date<'01/08/20') %>%
   rename(state='State/UnionTerritory') %>%
   group_by(state) %>%
-  summarise(sum_confirmed=sum(Confirmed),sum_deaths=sum(Deaths),sum_cured=sum(Cured)) %>%
-  arrange(desc(sum_cured))
+  summarise(sum_cured=sum(Cured)) %>%
+  arrange(desc(sum_cured)) %>%
+  top_n(n=10)
   
 best_recovery_rate
 

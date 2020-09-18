@@ -15,63 +15,282 @@ title: "Movies"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+```{r load-libraries, include=FALSE, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(mosaic)
 library(ggthemes)
 library(lubridate)
-library(fivethirtyeight)
 library(here)
 library(skimr)
 library(janitor)
+library(httr)
+library(readxl)
 library(vroom)
-library(tidyquant)
-library(ggplot2)
-library(ggrepel) # Added for Challenge 1
-library(scales) # Added for Challenge 2
-library(tidytext) # Added for Challenge 2
+library(infer)
+library(knitr)
 ```
 
-```{r, echo=TRUE, warning=FALSE}
-#Loading data
-movies<- read.csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv")
+# Analysis of movies- IMDB dataset
 
-glimpse(movies) #viewing data
+We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movie dataset](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset)
+
+  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Save data set in variable "movies"
+movies <- read.csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv")
+
+# Take a look at the data frame
+glimpse(movies)
+
 ```
-```{r, echo=TRUE, warning=FALSE}
-#now we produce a summary statistic of the data
+
+## Data Cleaning:
+
+- We will take a look at `NA` and duplicated values:
+
+```{r duplicates_NA, echo=TRUE}
+# Sum of duplicates
+duplicates <-sum(any(duplicated(movies)))
+# Sum of NA values
+na_values <- sum(any(is.na(movies)))
+
+# Check for NA values in the data frame. If return is FALSE, then the sum should yield 0.
+print(paste0("Total NA in movies data set: ", na_values), quote=FALSE)
+
+# Check for duplicate values. If return is FALSE, then the sum should yield 0.
+print(paste0("Total duplicates in movies data set: ", duplicates), quote=FALSE)
+```
+Both answers are `FALSE`. The sum of both outcomes yields `0`. Therefore there no `NA` nor `duplicate` values.
+
+Are we sure about this? Let's analyse it in further detail!
+
+```{r duplicates_NA_2, echo=TRUE}
+skim(movies) # Data Summary
+```
+If we take a look at the titles, it says **"unique" = 2907**. However, there are **2961 rows**. There is a discrepancy of about **54** movie titles. *But why is that?*
+
+```{r analyse_duplicates, echo=TRUE}
+an_dup<- movies %>%
+  filter(duplicated(movies$title)) # Filter by duplicated in column title
+
+```
+Indeed, these 54 titles are repeated. However the result did not come up with `duplicated()`. We will take a few examples and analyse why. One hypothesis would be that at least 1 column is slightly different.
+
+```{r duplicate_examples, echo=TRUE}
+
+dup_sample<-movies %>%
+  filter(title %in% c("Spider-Man 3", "Alice in Wonderland", "Cinderella", "Twilight"))
+
+# Show first 10 results
+kable(head(dup_sample, 10))
+```
+**Aha!** As it seems, there happens to be a discrepancy with the votes. These duplicated records have a different number of votes.
+
+Since the difference is not significant, we will proceed to eliminate these duplicates based on the movie title and continue our analysis that way.
+
+```{r movies_cleaned, echo=TRUE}
+
+movies <- movies %>%
+  filter(!duplicated(movies$title)) # filter by not duplicated on column title
+
+movies
 skim(movies)
+
+
 ```
-We notice that its a clean data set with no NA values. 
+Our data set is now good to go: 2907 unique titles, 2907 rows.
 
-```{r, echo=TRUE, warning=FALSE}
 
-movies_filtered<- movies %>%
-  filter(year>=2000) 
+## Analysis
 
- plot1<- ggplot(movies_filtered, aes(x=budget, y=gross, colour=genre)) + geom_point()+
-   labs(title="How does gross profit change with budget?")
- 
- plot1
-```
+### Movies and Genre
 
-We see that most of the movies have a linear relationship in terms of budget and 
+Let's produce a table with the rank of movies by genre
 
-```{r, echo=TRUE, warning=FALSE}
+```{r movies_by_genre, echo=TRUE}
 
- plot1<- ggplot(movies_filtered, aes(x=genre,y=gross)) + 
-  geom_boxplot()+
-  theme(axis.text.x=element_text(angle=90,margin = margin(0.2, unit = "cm"),vjust =1))
- 
- plot1
+movies_by_genre <- movies %>%  # Save in object 'movies_by_gender'
+  group_by(genre) %>% # Group by genre
+  summarise(count = n()) %>% # Create column counting values
+  arrange(desc(count)) # Arrange by descending order
+
+kable(movies_by_genre)
 ```
 
+### Gross Profit and Budget
 
-```{r, echo=TRUE, warning=FALSE}
-area_y<-ggplot(movies_filtered, aes(x=year, y=gross, colour=genre)) + 
-    geom_point()
+We will now analyse the gross profit and budget.
 
-area_y
+Let's produce a table with the average gross earning and budget (`gross` and `budget`) by genre and analyse the `return_on_budget` to see how many $ did a movie make at the box office for each $ of its budget. We will show the first 10 results so as to take a look at the data set.
+
+```{r rob_movies, echo=TRUE}
+rob_movies <- movies %>%  # Save in object "rob_movies" - rob = return on budget
+  mutate(return_on_budget = (gross/budget)) # Calculate how much did a movie make at the box office for each $ of is budget
+
+# Show first 10 results
+kable(head(rob_movies, 10))
+
 ```
+The data set now has a column at the end with the return on budget. Useful as this might be, it's not very neat to look at this from the movie level. We will group this by genre and analyse results. We will display the `$` in Millions of dollars.
+
+```{r avg_gross_and_budget_table, echo=TRUE}
+
+
+rob_by_genre <- rob_movies %>% # Save into new object
+  group_by(genre) %>% # group by genre - rows will collapse
+  summarise(gross_mean = mean(gross), budget_mean = mean(budget), return_on_budget = mean(return_on_budget)) %>% # Calculate average of gross and budget
+  arrange(desc(return_on_budget)) # arrange in descending order
+
+# Since the view of this tab is not very neat, we will proceed to transform the values in "gross_mean" and "budget_mean" into Millions.
+
+rob_by_genre_in_M <- rob_by_genre %>%
+  mutate(gross_mean = format(round(gross_mean / 1e6, 1), trim = TRUE), # Convert into millions
+         budget_mean = format(round(budget_mean / 1e6, 1), trim = TRUE)) # Convert into millions
+
+# Show results in Millions
+kable(rob_by_genre_in_M)
+
+```
+### Are directors profitable enough?
+
+To find out, let's produce a table that shows the top 15 directors who have created the highest gross revenue in the box office. 
+
+We will add summary statistics as well to make it look more interesting.
+
+```{r top_15_directors_table, echo=TRUE}
+
+top_15_directors <- movies %>% # save in object
+  group_by(director) %>% # group by directors - rows will collapse
+  
+  # Calculate total, mean, median gross and sd
+  summarise(total = sum(gross),
+            mean = mean(gross),
+            median = median(gross),
+            sd = sd(gross)) %>% 
+  arrange(desc(total)) %>% # arrange in descending order
+  top_n(n=15, wt=total) # show top 15 values
+
+
+# Convert results into Millions
+
+top_15_in_M <- top_15_directors %>%
+  mutate(total = format(round(total / 1e6, 1), trim = TRUE), # Convert into millions and so on
+         mean = format(round(mean / 1e6, 1), trim = TRUE),
+         median = format(round(median / 1e6, 1), trim = TRUE),
+         sd = format(round(sd / 1e6, 1), trim = TRUE))
+
+# Result represented in Millions
+kable(top_15_in_M)
+
+```
+### Ratings by genre
+
+We will produce a table that describes how ratings are distributed by genre and add a page describing the dataset.
+```{r genre_distribution, echo=TRUE}
+# Create data frame with genre as categorical variable and the mean, min, max, median and SD as numerical variables.
+# We use the first data frame with results in their original format
+
+genre_distribution <- movies %>%
+  group_by(genre) %>%
+  
+  # Calculate mean, min, max median and sd
+  summarise(rating_mean = mean(rating),
+            rating_min = min(rating),
+            rating_max = max(rating),
+            rating_median = median(rating),
+            rating_sd = sd(rating))
+
+# Print table with histograms
+skim(genre_distribution)
+
+```
+
+
+
+## Plotting results
+
+### Facebook Likes and Gross Profit
+**Can facebook users predict the gross profit of movies?**
+
+We will produce a scatterplot analysing the number of `cast_facebook_likes` received and the `gross_profit` generated. *Is there a positive correlation between these?*
+  
+
+```{r gross_fblikes, echo=TRUE}
+
+gross_fblikes <- ggplot(movies, aes(x = cast_facebook_likes,
+                   y = gross,
+                   colour = genre)) +
+  
+  geom_point(alpha = 0.6) +
+  geom_smooth(col = 'black') + #create a line
+  scale_x_log10() +  # Use the log scale since data is crowded along the X axis
+  scale_y_log10() +  # Use the log scale since data is crowded along the Y axis
+  
+  # Add labels
+  labs(title = "Relationship between gross profit and cast facebook likes",
+       color = "Genre",
+       caption = 'Source: Kaggle IMDB 5000 movie dataset') +
+  xlab("The number of facebook likes cast members received") +
+  ylab("The gross earnings in the US box office")
+
+
+plot(gross_fblikes)
+```
+X axis should be the number of `cast_facebook_likes` and Y axis should be the `gross_profit`.
+
+The data suggests a positive correlation between `gross profits` and number of `facebook likes`. The problem is that the data **very centered** around the middle (specific range of likes). This does not allow us to draw any certain conclusions because data on the edges seem to be insufficient.
+
+
+### Budget and Gross Profit
+
+Let's delve further into this. We will now analyse the relationship between `gross` and `budget` producing a scatterplot.
+
+```{r, gross_on_budget, echo=TRUE}
+
+gross_on_budget <- ggplot(movies, aes(x = budget,
+                   y = gross,
+                   color = genre)) +
+  
+  geom_point(alpha = 0.7) +
+
+  scale_x_log10() +  #Use the log scale since data is crowded along the X axis
+  scale_y_log10() +
+  geom_quantile(quantiles = 0.5) +
+  
+  # Add labels
+  labs(title = "Relationship between gross profit and budget of the movies",
+       caption = 'Source: Kaggle IMDB 5000 movie dataset') +
+  xlab("Budget of the movies") +
+  ylab("The gross earnings in the US box office")
+
+
+plot(gross_on_budget)
+
+```
+  
+It can be appreciated that there is a positive correlation between the `budget` invested in movies and the `gross profits` in the US box office. Most points concentrate on the top right of the plot, thereby establishing a positive correlation. This is to be expected in most cases - **otherwise film business would have ended years ago.**
+
+There can also be interesting `outliers` that generate a lot of profits with not much budget.
+
+### iMDB Ratings and Gross Profit
+
+We will examine the relationship between `gross` and `rating`. Let's produce a scatterplot faceted by `genre`.
+```{r gross_on_rating, echo=TRUE}
+gross_on_rating <- ggplot(movies, aes(rating,
+                   gross,
+                   color = rating)) +
+  geom_point(alpha = 0.8)  +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(title = "Relationship between gross profit and iMDB rating",
+       caption = 'Source: Kaggle IMDB 5000 movie dataset') +
+  xlab("iMDB Rating") +
+  ylab("Gross profit") +
+  facet_wrap(~genre)
+
+plot(gross_on_rating)
+```
+
+For `action`, `adventure` and `comedy` categories there is a very large concentration of points in the upper right corner, indicating that there may be a positive interdependence between high ratings and gross profit. We may not see a very clear trend for other categories: even though `drama` and `crime` have high ratings, the `gross profit` line is vertical, so some very high-rated movies resulted in low level of profits. Conversely, `Horror` and `Fantasy` movies brought very high profits for most of the movies rated positively.
+
+However, in other genres such as `family`, `musical`, `romance`, `Sci-Fi`, `thriller` and `western`, there is a scarcity of data that does not allow us to come to insightful conclusions. There is no indicator that these sort of genres will generate less revenue than those genres for which the data is abundant.

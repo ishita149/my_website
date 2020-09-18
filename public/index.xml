@@ -38,7 +38,9 @@ Among other things, the data set includes employees’ income, their distance fr
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
       <guid>/blogs/covid/</guid>
-      <description>statewise&amp;lt;-vroom(&amp;quot;C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv&amp;quot;)## Rows: 6,316## Columns: 9## Delimiter: &amp;quot;,&amp;quot;## chr [5]: Date, Time, State/UnionTerritory, ConfirmedIndianNational, ConfirmedForeignNati...## dbl [4]: Sno, Cured, Deaths, Confirmed## ## Use `spec()` to retrieve the guessed column specification## Pass a specification to the `col_types` argument to quiet this messagecovid_data&amp;lt;-read_csv(&amp;quot;C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv&amp;quot;)## Parsed with column specification:## cols(## Date = col_date(format = &amp;quot;&amp;quot;),## State = col_character(),## TotalSamples = col_double(),## Negative = col_double(),## Positive = col_double()## )skim(covid_data)Table 1: Data summaryNamecovid_dataNumber of rows5223Number of columns5_______________________Column type frequency:character1Date1numeric3________________________Group variablesNoneVariable type: character</description>
+      <description>#India Covid data
+We analyze the Covid testing and cases data for India.
+statewise&amp;lt;-vroom(&amp;quot;C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv&amp;quot;)## Rows: 6,316## Columns: 9## Delimiter: &amp;quot;,&amp;quot;## chr [5]: Date, Time, State/UnionTerritory, ConfirmedIndianNational, ConfirmedForeignNati...## dbl [4]: Sno, Cured, Deaths, Confirmed## ## Use `spec()` to retrieve the guessed column specification## Pass a specification to the `col_types` argument to quiet this messagecovid_data&amp;lt;-read_csv(&amp;quot;C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv&amp;quot;)## Parsed with column specification:## cols(## Date = col_date(format = &amp;quot;&amp;quot;),## State = col_character(),## TotalSamples = col_double(),## Negative = col_double(),## Positive = col_double()## )We now produce the summary statistics.</description>
     </item>
     
     <item>
@@ -47,43 +49,8 @@ Among other things, the data set includes employees’ income, their distance fr
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
       <guid>/blogs/project1/</guid>
-      <description>R Markdown#Loading datamovies&amp;lt;- read.csv(&amp;quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv&amp;quot;)glimpse(movies) #viewing data## Rows: 2,961## Columns: 11## $ title &amp;lt;chr&amp;gt; &amp;quot;Avatar&amp;quot;, &amp;quot;Titanic&amp;quot;, &amp;quot;Jurassic World&amp;quot;, &amp;quot;The Ave...## $ genre &amp;lt;chr&amp;gt; &amp;quot;Action&amp;quot;, &amp;quot;Drama&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;...## $ director &amp;lt;chr&amp;gt; &amp;quot;James Cameron&amp;quot;, &amp;quot;James Cameron&amp;quot;, &amp;quot;Colin Trevor...## $ year &amp;lt;int&amp;gt; 2009, 1997, 2015, 2012, 2008, 1999, 1977, 2015,...## $ duration &amp;lt;int&amp;gt; 178, 194, 124, 173, 152, 136, 125, 141, 164, 93.</description>
-    </item>
-    
-    <item>
-      <title>Where am I from?</title>
-      <link>/projects/aliquam/</link>
-      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
-      
-      <guid>/projects/aliquam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Education</title>
-      <link>/projects/tempus/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
-      
-      <guid>/projects/tempus/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Work Experience</title>
-      <link>/projects/magna/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
-      
-      <guid>/projects/magna/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Interests</title>
-      <link>/projects/ipsum/</link>
-      <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
-      
-      <guid>/projects/ipsum/</guid>
-      <description></description>
+      <description>Analysis of movies- IMDB datasetWe will look at a subset sample of movies, taken from the Kaggle IMDB 5000 movie dataset
+# Save data set in variable &amp;quot;movies&amp;quot;movies &amp;lt;- read.csv(&amp;quot;C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/movies.csv&amp;quot;)# Take a look at the data frameglimpse(movies)## Rows: 2,961## Columns: 11## $ title &amp;lt;chr&amp;gt; &amp;quot;Avatar&amp;quot;, &amp;quot;Titanic&amp;quot;, &amp;quot;Jurassic World&amp;quot;, &amp;quot;The Ave...## $ genre &amp;lt;chr&amp;gt; &amp;quot;Action&amp;quot;, &amp;quot;Drama&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;, &amp;quot;Action&amp;quot;.</description>
     </item>
     
     <item>

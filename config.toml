@@ -56,9 +56,9 @@ disqusShortname = ""
     #  name = "About me"
      # url = "about me"
 
-    [[params.navigation.links]]
-        name = "About me"
-        url = "projects"
+    #[[params.navigation.links]]
+        #name = "About me"
+       # url = "projects"
 
     #[[params.navigation.links]]
     #  name = "Generic Blog"
