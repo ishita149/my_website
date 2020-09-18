@@ -275,8 +275,8 @@ plot1</code></pre>
 
 plot2</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-We see that there is an almost linear relation between fertility rate and GDP for most regions except ‘Middle East and North Africa’. We also see a steep trend in regions with more developing countries like in the case of ‘South Asia’ and ‘Latin America’.</p>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We see that there is an almost linear relation between fertility rate and GDP for most regions except ‘Middle East and North Africa’. We also see a steep trend in regions with more developing countries like in the case of ‘South Asia’ and ‘Latin America’.</p>
 <p>How has the Mortality rate changed by region?</p>
 <pre class="r"><code>plot_mortality&lt;-main_table %&gt;%
   drop_na(mortality_rate) %&gt;%
@@ -314,8 +314,8 @@ We see that there is an almost linear relation between fertility rate and GDP fo
 #+facet_wrap(~ income_level)
 
 plot3</code></pre>
-<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-Which countries had the most and least improvement in mortality rate?</p>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Which countries had the most and least improvement in mortality rate?</p>
 <pre class="r"><code>mortality_rate_filtered&lt;-main_table %&gt;%
 select(c(country,region,year,mortality_rate)) %&gt;% #selecting relevant columns
   pivot_wider(names_from=year,values_from=mortality_rate)%&gt;% #adding pivot to convert to columns
@@ -362,14 +362,10 @@ geom_smooth()+ #adding the trend line
 
 plot4</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
-<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-6-1.png" width="672" />
-We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well.</p>
-<pre class="r"><code>corrmat&lt;-main_table %&gt;%
-  drop_na(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate) %&gt;%
-  select(mortality_rate,fertility_rate,life_expectancy_rate,primary_school_enrollment,hiv_rate)
-  
-cormat &lt;- round(cor(corrmat),2)
-head(cormat)</code></pre>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well.</p>
+<p>#Correlation matrix</p>
+<p>Lastly we will see how each variable is correlated with one another in the gapminder datset.</p>
 <pre><code>##                           mortality_rate fertility_rate life_expectancy_rate
 ## mortality_rate                      1.00           0.90                -0.88
 ## fertility_rate                      0.90           1.00                -0.81
@@ -382,14 +378,11 @@ head(cormat)</code></pre>
 ## life_expectancy_rate                           0.71    -0.59
 ## primary_school_enrollment                      1.00    -0.17
 ## hiv_rate                                      -0.17     1.00</code></pre>
-<pre class="r"><code>library(reshape2)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;reshape2&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:tidyr&#39;:
 ## 
 ##     smiths</code></pre>
-<pre class="r"><code>melted_cormat &lt;- melt(cormat)
-head(melted_cormat)</code></pre>
 <pre><code>##                        Var1           Var2 value
 ## 1            mortality_rate mortality_rate  1.00
 ## 2            fertility_rate mortality_rate  0.90
@@ -399,7 +392,7 @@ head(melted_cormat)</code></pre>
 ## 6            mortality_rate fertility_rate  0.90</code></pre>
 <pre class="r"><code>ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
   geom_tile()</code></pre>
-<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 
                         </div>

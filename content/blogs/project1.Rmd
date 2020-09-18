@@ -93,7 +93,7 @@ Since the difference is not significant, we will proceed to eliminate these dupl
 movies <- movies %>%
   filter(!duplicated(movies$title)) # filter by not duplicated on column title
 
-movies
+
 skim(movies)
 
 

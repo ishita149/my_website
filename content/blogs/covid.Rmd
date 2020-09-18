@@ -64,6 +64,7 @@ plot1<- ggplot(testing,aes(x=Date,y=sum_testing))+
 
 plot1
 ```
+
 We see that there is an upward trend in the testing samples done for India. The lower values could also have been due to incorrect reporting of numbers in the beginning.
 
 ## How have positive cases increased?
@@ -87,6 +88,7 @@ plot2<- ggplot(testing,aes(x=Date,y=sum_positive))+
 
 plot2
 ```
+
 ## Data Wrangling
 
 We now drop the NA values from the fields we want to perform our analysis.

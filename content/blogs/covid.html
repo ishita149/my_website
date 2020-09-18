@@ -388,8 +388,8 @@ categories:
        y=&quot;total tests in millions&quot;)
 
 plot1</code></pre>
-<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-2-1.png" width="672" />
-We see that there is an upward trend in the testing samples done for India. The lower values could also have been due to incorrect reporting of numbers in the beginning.</p>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>We see that there is an upward trend in the testing samples done for India. The lower values could also have been due to incorrect reporting of numbers in the beginning.</p>
 </div>
 <div id="how-have-positive-cases-increased" class="section level2">
 <h2>How have positive cases increased?</h2>
@@ -408,8 +408,10 @@ We see that there is an upward trend in the testing samples done for India. The 
        y=&quot;sum of posititve cases&quot;)
 
 plot2</code></pre>
-<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-## Data Wrangling</p>
+<p><img src="/blogs/covid_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data Wrangling</h2>
 <p>We now drop the NA values from the fields we want to perform our analysis.</p>
 <pre class="r"><code>state_data &lt;- statewise %&gt;%
   drop_na(Confirmed,Deaths,Cured) %&gt;%
