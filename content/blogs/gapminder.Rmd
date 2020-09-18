@@ -230,7 +230,7 @@ plot4
 
 We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well. 
 
-#Correlation matrix
+## Correlation matrix
 
 Lastly we will see how each variable is correlated with one another in the gapminder datset.
 

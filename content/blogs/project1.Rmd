@@ -107,7 +107,7 @@ Our data set is now good to go: 2907 unique titles, 2907 rows.
 
 Let's produce a table with the rank of movies by genre
 
-```{r movies_by_genre, echo=TRUE}
+```{r movies_by_genre, echo=TRUE, warning=FALSE}
 
 movies_by_genre <- movies %>%  # Save in object 'movies_by_gender'
   group_by(genre) %>% # Group by genre
@@ -123,7 +123,7 @@ We will now analyse the gross profit and budget.
 
 Let's produce a table with the average gross earning and budget (`gross` and `budget`) by genre and analyse the `return_on_budget` to see how many $ did a movie make at the box office for each $ of its budget. We will show the first 10 results so as to take a look at the data set.
 
-```{r rob_movies, echo=TRUE}
+```{r rob_movies, echo=TRUE, warning=FALSE}
 rob_movies <- movies %>%  # Save in object "rob_movies" - rob = return on budget
   mutate(return_on_budget = (gross/budget)) # Calculate how much did a movie make at the box office for each $ of is budget
 
@@ -133,7 +133,7 @@ kable(head(rob_movies, 10))
 ```
 The data set now has a column at the end with the return on budget. Useful as this might be, it's not very neat to look at this from the movie level. We will group this by genre and analyse results. We will display the `$` in Millions of dollars.
 
-```{r avg_gross_and_budget_table, echo=TRUE}
+```{r avg_gross_and_budget_table, echo=TRUE, warning=FALSE}
 
 
 rob_by_genre <- rob_movies %>% # Save into new object
@@ -157,7 +157,7 @@ To find out, let's produce a table that shows the top 15 directors who have crea
 
 We will add summary statistics as well to make it look more interesting.
 
-```{r top_15_directors_table, echo=TRUE}
+```{r top_15_directors_table, echo=TRUE, warning=FALSE}
 
 top_15_directors <- movies %>% # save in object
   group_by(director) %>% # group by directors - rows will collapse
@@ -186,7 +186,7 @@ kable(top_15_in_M)
 ### Ratings by genre
 
 We will produce a table that describes how ratings are distributed by genre and add a page describing the dataset.
-```{r genre_distribution, echo=TRUE}
+```{r genre_distribution, echo=TRUE, warning=FALSE}
 # Create data frame with genre as categorical variable and the mean, min, max, median and SD as numerical variables.
 # We use the first data frame with results in their original format
 
@@ -215,7 +215,7 @@ skim(genre_distribution)
 We will produce a scatterplot analysing the number of `cast_facebook_likes` received and the `gross_profit` generated. *Is there a positive correlation between these?*
   
 
-```{r gross_fblikes, echo=TRUE}
+```{r gross_fblikes, echo=TRUE, warning=FALSE}
 
 gross_fblikes <- ggplot(movies, aes(x = cast_facebook_likes,
                    y = gross,
@@ -245,7 +245,7 @@ The data suggests a positive correlation between `gross profits` and number of `
 
 Let's delve further into this. We will now analyse the relationship between `gross` and `budget` producing a scatterplot.
 
-```{r, gross_on_budget, echo=TRUE}
+```{r, gross_on_budget, echo=TRUE, warning=FALSE}
 
 gross_on_budget <- ggplot(movies, aes(x = budget,
                    y = gross,
@@ -275,7 +275,7 @@ There can also be interesting `outliers` that generate a lot of profits with not
 ### iMDB Ratings and Gross Profit
 
 We will examine the relationship between `gross` and `rating`. Let's produce a scatterplot faceted by `genre`.
-```{r gross_on_rating, echo=TRUE}
+```{r gross_on_rating, echo=TRUE, warning=FALSE}
 gross_on_rating <- ggplot(movies, aes(rating,
                    gross,
                    color = rating)) +

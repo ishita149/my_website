@@ -30,11 +30,11 @@ library(vroom)
 library(infer)
 ```
 
-#India Covid data
+# India Covid data
 
 We analyze the Covid testing and cases data for India.
 
-```{r loading, echo=TRUE}
+```{r loading, echo=TRUE, warning=FALSE}
 statewise<-vroom("C:/Users/Ishita Gupta/Desktop/covid/covid_19_india.csv")
 covid_data<-read_csv("C:/Users/Ishita Gupta/Desktop/covid/StatewiseTestingDetails.csv")
 

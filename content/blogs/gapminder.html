@@ -300,7 +300,8 @@ plot4</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>We see that as the fertility rate is increasing, the primary school enrollment decreases. This is prevalent in a lot of African countries like Afganistan. However we also see a lot of outliers like in case of Middle Eastern contries where the fertility rate is more however the primary school enrollment is towards the higher end as well.</p>
-<p>#Correlation matrix</p>
+<div id="correlation-matrix" class="section level2">
+<h2>Correlation matrix</h2>
 <p>Lastly we will see how each variable is correlated with one another in the gapminder datset.</p>
 <pre><code>##                           mortality_rate fertility_rate life_expectancy_rate
 ## mortality_rate                      1.00           0.90                -0.88
@@ -329,4 +330,5 @@ plot4</code></pre>
 <pre class="r"><code>ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
   geom_tile()</code></pre>
 <p><img src="/blogs/gapminder_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
 </div>

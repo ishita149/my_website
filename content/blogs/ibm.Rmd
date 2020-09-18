@@ -66,15 +66,11 @@ First let us load the data
 ```{r , warning=FALSE}
 
 hr_dataset <- read_csv("C:/Users/Ishita Gupta/Desktop/Applied statistics with R/applied-statistics/session2-workshop1/data/datasets_1067_1925_WA_Fn-UseC_-HR-Employee-Attrition.csv")
-glimpse(hr_dataset)
 
 ```
-## Data Cleaning and wrangling
-
-We are going to clean the data set, as variable names are in capital letters, some variables are not really necessary, and some variables, e.g., `education` are given as a number rather than a more useful description
 
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 
 hr_cleaned <- hr_dataset %>% 
   clean_names() %>% 
@@ -333,6 +329,7 @@ edu_gen<- hr_cleaned %>%
 ```
 
 Show results and plot data. We will include `theme_bw()` to make it look good.
+
 ```{r income_grouped_education, echo=TRUE}
 
 # Show results on education
@@ -359,6 +356,7 @@ As it can be appreciated, there is a relationship between education levels. From
 kable(income_gender)
 
 ```
+
 We will now add `theme_economist()` to this plot to make it look good.
 
 ```{r income_gender_p, echo=TRUE}
@@ -449,7 +447,6 @@ income_age_fjob_level<- ggplot(hr_cleaned, aes(x=age, y=monthly_income,
          x = 'Age',
          title = "Monthly Income According to Age on different jobs")+
   theme(legend.position = "none")
-    NULL
     
 plot(income_age_fjob_level)
 ```

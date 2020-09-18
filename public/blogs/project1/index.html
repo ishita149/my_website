@@ -1465,11 +1465,7 @@ skim(genre_distribution)</code></pre>
 
 
 plot(gross_fblikes)</code></pre>
-<pre><code>## Warning: Transformation introduced infinite values in continuous x-axis
-
-## Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_smooth).</code></pre>
 <p><img src="/blogs/project1_files/figure-html/gross_fblikes-1.png" width="672" />
 X axis should be the number of <code>cast_facebook_likes</code> and Y axis should be the <code>gross_profit</code>.</p>
 <p>The data suggests a positive correlation between <code>gross profits</code> and number of <code>facebook likes</code>. The problem is that the data <strong>very centered</strong> around the middle (specific range of likes). This does not allow us to draw any certain conclusions because data on the edges seem to be insufficient.</p>
@@ -1511,8 +1507,6 @@ plot(gross_on_budget)</code></pre>
 ## Smoothing formula not specified. Using: y ~ x
 ## Smoothing formula not specified. Using: y ~ x
 ## Smoothing formula not specified. Using: y ~ x</code></pre>
-<pre><code>## Warning: Computation failed in `stat_quantile()`:
-## Singular design matrix</code></pre>
 <p><img src="/blogs/project1_files/figure-html/gross_on_budget-1.png" width="672" /></p>
 <p>It can be appreciated that there is a positive correlation between the <code>budget</code> invested in movies and the <code>gross profits</code> in the US box office. Most points concentrate on the top right of the plot, thereby establishing a positive correlation. This is to be expected in most cases - <strong>otherwise film business would have ended years ago.</strong></p>
 <p>There can also be interesting <code>outliers</code> that generate a lot of profits with not much budget.</p>
